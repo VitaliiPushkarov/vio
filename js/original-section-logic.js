@@ -555,8 +555,12 @@ class ProductInfluencerVideoSlider extends HTMLElement {
       this.slider = null
       this.videos = []
       this.resizeFrame = 0
+      this.layoutRefreshFrame = 0
+      this.videoReadyCleanups = []
       this.handleResize = this.handleResize.bind(this)
       this.handleDomReady = this.handleDomReady.bind(this)
+      this.handleWindowLoad = this.handleWindowLoad.bind(this)
+      this.requestLayoutRefresh = this.requestLayoutRefresh.bind(this)
     }
 
     connectedCallback() {
@@ -579,6 +583,15 @@ class ProductInfluencerVideoSlider extends HTMLElement {
         cancelAnimationFrame(this.resizeFrame)
         this.resizeFrame = 0
       }
+
+      if (this.layoutRefreshFrame) {
+        cancelAnimationFrame(this.layoutRefreshFrame)
+        this.layoutRefreshFrame = 0
+      }
+
+      this.videoReadyCleanups.forEach((cleanup) => cleanup())
+      this.videoReadyCleanups = []
+      window.removeEventListener('load', this.handleWindowLoad)
     }
 
     handleDomReady() {
@@ -603,8 +616,11 @@ class ProductInfluencerVideoSlider extends HTMLElement {
     onSliderLoaded() {
       if (!this.slider) return
 
-      this.videos = this.querySelectorAll('component-video')
+      this.videos = Array.from(this.querySelectorAll('component-video'))
+      this.bindVideoReadyEvents()
       this.syncSliderLayout()
+      this.requestLayoutRefresh()
+      window.addEventListener('load', this.handleWindowLoad, { once: true })
 
       this.slider.on('move', () => {
         this.pauseAllVideos()
@@ -617,6 +633,10 @@ class ProductInfluencerVideoSlider extends HTMLElement {
       this.slider.on('resized', () => {
         this.syncSliderLayout()
       })
+    }
+
+    handleWindowLoad() {
+      this.requestLayoutRefresh()
     }
 
     handleResize() {
@@ -632,6 +652,47 @@ class ProductInfluencerVideoSlider extends HTMLElement {
       })
     }
 
+    bindVideoReadyEvents() {
+      this.videoReadyCleanups.forEach((cleanup) => cleanup())
+      this.videoReadyCleanups = []
+
+      this.videos.forEach((videoComponent) => {
+        const video = videoComponent.querySelector('video')
+        if (!video) return
+
+        const handleReady = () => {
+          this.requestLayoutRefresh()
+        }
+
+        video.addEventListener('loadedmetadata', handleReady)
+        video.addEventListener('loadeddata', handleReady)
+        video.addEventListener('canplay', handleReady)
+
+        this.videoReadyCleanups.push(() => {
+          video.removeEventListener('loadedmetadata', handleReady)
+          video.removeEventListener('loadeddata', handleReady)
+          video.removeEventListener('canplay', handleReady)
+        })
+
+        if (video.readyState >= 1) {
+          this.requestLayoutRefresh()
+        }
+      })
+    }
+
+    requestLayoutRefresh() {
+      if (!this.slider) return
+
+      if (this.layoutRefreshFrame) {
+        cancelAnimationFrame(this.layoutRefreshFrame)
+      }
+
+      this.layoutRefreshFrame = requestAnimationFrame(() => {
+        this.layoutRefreshFrame = 0
+        this.syncSliderLayout(true)
+      })
+    }
+
     syncSliderLayout(shouldRefresh = false) {
       const sliderEl = this.querySelector(
         'splide-slider.product-influencer-video-splide',
@@ -643,11 +704,12 @@ class ProductInfluencerVideoSlider extends HTMLElement {
 
       sliderEl.style.width = '100%'
       sliderEl.style.maxWidth = '100%'
-      track.style.width = '100%'
-      list.style.width = '100%'
+      track.style.removeProperty('width')
+      list.style.removeProperty('width')
+      list.style.removeProperty('max-width')
 
       slides.forEach((slide) => {
-        slide.style.maxWidth = '100%'
+        slide.style.removeProperty('max-width')
       })
 
       if (shouldRefresh && typeof this.slider.refresh === 'function') {

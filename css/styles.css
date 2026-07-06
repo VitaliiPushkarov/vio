@@ -4068,7 +4068,6 @@ form[data-template-disabled='true'] {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
-  width: 100%;
   min-width: 0;
 }
 
@@ -4077,7 +4076,7 @@ form[data-template-disabled='true'] {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100% !important;
   max-width: 100%;
   min-width: 0;
   overflow: hidden;
@@ -4085,6 +4084,7 @@ form[data-template-disabled='true'] {
 
 .product-influencer-video__video-wrapper {
   position: relative;
+  flex: 0 0 100%;
   width: 100%;
   height: 380px;
   border-radius: var(--radius-section-card, 10px);
