@@ -1,0 +1,854 @@
+body.template-theme-hydrolab {
+  --bg-color: #eef5f8;
+  --primary-color: #0f8a97;
+  --color-text-primary: #091521;
+  --color-text-secondary: #50616f;
+  --color-text-tertiary: #788793;
+  --color-text-highlight: #0f8a97;
+  --color-text-link: #0f8a97;
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f3fbfc;
+  --color-surface-tertiary: #dff5f7;
+  --color-surface-quaternary: #123447;
+  --filled-button-bg: #0f8a97;
+  --filled-button-bg-hover: #0b6f79;
+  --radius-section-card: 28px;
+  --spacing-max-content-width-desktop: 1360px;
+  background:
+    radial-gradient(circle at 0 0, rgba(109, 212, 224, 0.22), transparent 26%),
+    radial-gradient(circle at 100% 4%, rgba(17, 66, 98, 0.12), transparent 24%),
+    linear-gradient(180deg, #edf6f9 0%, #f7fbfc 26%, #ffffff 100%);
+  color: #091521;
+}
+#MainContent {
+  background: none;
+}
+body.template-theme-hydrolab .shopify-section:not(:first-child) {
+  background: transparent;
+}
+
+body.template-theme-hydrolab .section-container {
+  max-width: 1360px;
+}
+
+body.template-theme-hydrolab .template-topbar {
+  top: 14px;
+  width: min(calc(100% - 36px), 1340px);
+  margin: 0 auto;
+  border: 1px solid rgba(18, 52, 71, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 22px 50px rgba(9, 21, 33, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+body.template-theme-hydrolab .template-topbar__inner {
+  padding: 18px 28px;
+}
+
+body.template-theme-hydrolab .template-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.template-theme-hydrolab .template-logo {
+  color: #103547;
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+body.template-theme-hydrolab .template-variant-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0f8a97, #15a9b7);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+body.template-theme-hydrolab .template-topbar__links {
+  gap: 20px;
+  color: #43525f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body.template-theme-hydrolab .template-topbar__links a {
+  opacity: 0.88;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+body.template-theme-hydrolab .template-topbar__links a:hover {
+  color: #103547;
+  opacity: 1;
+}
+
+body.template-theme-hydrolab .template-topbar__menu-toggle {
+  border-color: rgba(18, 52, 71, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #103547;
+  box-shadow: 0 10px 20px rgba(9, 21, 33, 0.08);
+}
+
+body.template-theme-hydrolab .template-mobile-menu__overlay {
+  background: rgba(9, 21, 33, 0.42);
+}
+
+body.template-theme-hydrolab .template-mobile-menu__panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  box-shadow: -20px 0 60px rgba(9, 21, 33, 0.14);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+body.template-theme-hydrolab .template-mobile-menu__close {
+  border-color: rgba(18, 52, 71, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #103547;
+}
+
+body.template-theme-hydrolab .template-mobile-menu__nav-list a {
+  border-bottom-color: rgba(18, 52, 71, 0.08);
+  color: #103547;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.template-theme-hydrolab .template-button {
+  min-height: 54px;
+  border-radius: 999px;
+  padding: 0 28px;
+  border-width: 1px;
+  box-shadow: 0 12px 24px rgba(9, 21, 33, 0.06);
+}
+
+body.template-theme-hydrolab .template-button--primary {
+  background: linear-gradient(135deg, #0f8a97, #12a8b6);
+  border-color: transparent;
+}
+
+body.template-theme-hydrolab .template-button--primary:hover {
+  background: #0d7682;
+  border-color: transparent;
+  color: #fff;
+}
+
+body.template-theme-hydrolab .template-button--secondary {
+  border-color: rgba(18, 52, 71, 0.12);
+  color: #103547;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+body.template-theme-hydrolab .template-button--secondary:hover {
+  background: #103547;
+  border-color: #103547;
+  color: #fff;
+}
+
+body.template-theme-hydrolab .template-hero {
+  padding-top: 34px;
+  padding-bottom: 96px;
+}
+
+body.template-theme-hydrolab .template-hero__inner {
+  gap: 34px;
+}
+
+body.template-theme-hydrolab .template-hero__gallery,
+body.template-theme-hydrolab .template-hero__content {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  box-shadow: 0 30px 80px rgba(9, 21, 33, 0.1);
+  height: 100%;
+}
+
+body.template-theme-hydrolab .template-hero__gallery {
+  padding: 28px;
+  background:
+    radial-gradient(
+      circle at 15% 12%,
+      rgba(104, 220, 231, 0.22),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(241, 250, 251, 0.92)
+    );
+}
+
+body.template-theme-hydrolab .template-hero__content {
+  top: 0;
+  padding: 34px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(246, 251, 252, 0.88)
+  );
+}
+
+body.template-theme-hydrolab .template-hero__gallery::after,
+body.template-theme-hydrolab .template-hero__content::after {
+  content: '';
+  position: absolute;
+  inset: auto auto -80px -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(64, 203, 218, 0.18),
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+body.template-theme-hydrolab .template-hero__media-tabs {
+  gap: 12px;
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: 7px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(222, 245, 247, 0.92);
+}
+
+body.template-theme-hydrolab .template-hero__media-tab {
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #62707c;
+}
+
+body.template-theme-hydrolab .template-hero__media-tab.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #103547, #0f8a97);
+}
+
+body.template-theme-hydrolab .template-hero__media-tab.is-active::after {
+  display: none;
+}
+
+body.template-theme-hydrolab .template-hero__main-image,
+body.template-theme-hydrolab .template-hero__main-video {
+  border-radius: 28px;
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  background: linear-gradient(180deg, #ffffff, #eef8fa);
+}
+
+body.template-theme-hydrolab .template-hero__nav {
+  width: 52px;
+  height: 52px;
+  background: rgba(16, 53, 71, 0.78);
+  color: #fff;
+}
+
+body.template-theme-hydrolab .template-hero__nav--prev {
+  left: 18px;
+}
+
+body.template-theme-hydrolab .template-hero__nav--next {
+  right: 18px;
+}
+
+body.template-theme-hydrolab .template-hero__thumbs {
+  gap: 12px;
+  margin-top: 18px;
+}
+
+body.template-theme-hydrolab .template-hero__thumb {
+  border: 1px solid rgba(18, 52, 71, 0.1);
+  border-radius: 18px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 28px rgba(9, 21, 33, 0.05);
+}
+
+body.template-theme-hydrolab .template-hero__thumb.is-active {
+  border-color: rgba(15, 138, 151, 0.42);
+  box-shadow:
+    0 14px 32px rgba(9, 21, 33, 0.08),
+    0 0 0 2px rgba(15, 138, 151, 0.22);
+}
+
+body.template-theme-hydrolab .template-hero h1 {
+  margin-bottom: 18px;
+  font-size: 42px;
+  line-height: 0.97;
+  letter-spacing: -0.06em;
+}
+
+body.template-theme-hydrolab .template-hero__reviews {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(223, 245, 247, 0.92);
+  color: #0f8a97;
+  margin-bottom: 20px;
+}
+
+body.template-theme-hydrolab .template-hero__price {
+  margin-bottom: 28px;
+  font-size: 24px;
+  letter-spacing: -0.05em;
+}
+
+body.template-theme-hydrolab .template-hero__features {
+  gap: 0;
+  margin-bottom: 30px;
+}
+
+body.template-theme-hydrolab .template-hero__features li {
+  padding: 16px 18px 16px 48px;
+  border-radius: 18px;
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 24px rgba(9, 21, 33, 0.04);
+}
+
+body.template-theme-hydrolab .template-hero__features li::before {
+  top: 16px;
+  left: 18px;
+  width: 18px;
+  text-align: center;
+  color: #0f8a97;
+}
+
+body.template-theme-hydrolab .template-hero__cta-row {
+  gap: 14px;
+}
+
+body.template-theme-hydrolab .template-benefits__list {
+  display: grid;
+  gap: 12px;
+  border-top: 0;
+}
+
+body.template-theme-hydrolab .template-benefits__trigger,
+body.template-theme-hydrolab .template-benefits__item-toggle {
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 24px rgba(9, 21, 33, 0.04);
+}
+
+body.template-theme-hydrolab .template-benefits__trigger:hover,
+body.template-theme-hydrolab .template-benefits__item-toggle:hover {
+  border-color: rgba(15, 138, 151, 0.28);
+}
+
+body.template-theme-hydrolab .template-benefits__drawer {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.template-theme-hydrolab .template-benefits__overlay {
+  background: rgba(10, 21, 33, 0.5);
+}
+
+body.template-theme-hydrolab .template-benefits__panel {
+  background: linear-gradient(180deg, #ffffff, #f4fbfc);
+  border-left: 1px solid rgba(18, 52, 71, 0.08);
+  box-shadow: -24px 0 56px rgba(9, 21, 33, 0.08);
+}
+
+body.template-theme-hydrolab .template-benefits__panel-title {
+  letter-spacing: -0.05em;
+}
+
+body.template-theme-hydrolab.template-sticky-purchase-active {
+  padding-bottom: 120px;
+}
+
+body.template-theme-hydrolab .template-sticky-purchase {
+  background: rgba(9, 21, 33, 0.94);
+  border-top: 1px solid rgba(120, 212, 222, 0.18);
+  box-shadow: 0 -18px 44px rgba(9, 21, 33, 0.2);
+}
+
+body.template-theme-hydrolab .template-sticky-purchase__delivery,
+body.template-theme-hydrolab .template-sticky-purchase__price {
+  color: #fff;
+}
+
+body.template-theme-hydrolab .template-sticky-purchase__delivery-icon {
+  color: #7cd7df;
+}
+
+body.template-theme-hydrolab
+  .template-sticky-purchase__actions
+  .template-button {
+  box-shadow: none;
+}
+
+body.template-theme-hydrolab
+  .template-sticky-purchase__actions
+  .template-button--secondary {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  background: transparent;
+}
+
+body.template-theme-hydrolab
+  .template-sticky-purchase__actions
+  .template-button--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.template-theme-hydrolab
+  .template-sticky-purchase__actions
+  .template-button--primary {
+  background: linear-gradient(135deg, #0f8a97, #15a9b7);
+}
+
+body.template-theme-hydrolab .selling-points-card,
+body.template-theme-hydrolab .product-media-switch__inner,
+body.template-theme-hydrolab .product-waterdrop-animation__container,
+body.template-theme-hydrolab .media-with-text-container,
+body.template-theme-hydrolab .wd-product-card-splide,
+body.template-theme-hydrolab .wd-product-compare,
+body.template-theme-hydrolab .select-guide-inner,
+body.template-theme-hydrolab .wd-reviews,
+body.template-theme-hydrolab .wd-faq-inner {
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 26px 62px rgba(9, 21, 33, 0.08);
+}
+
+body.template-theme-hydrolab .selling-points-card {
+  overflow: hidden;
+}
+
+body.template-theme-hydrolab .selling-points-item picture,
+body.template-theme-hydrolab .selling-points-item-img,
+body.template-theme-hydrolab .selling-points-grid .component-video {
+  filter: saturate(0.96) contrast(1.02);
+}
+
+body.template-theme-hydrolab .selling-points-item-content {
+  padding: 30px;
+}
+
+body.template-theme-hydrolab .selling-points-1-item-title,
+body.template-theme-hydrolab .selling-points-2-item-title,
+body.template-theme-hydrolab .selling-points-3-item-title,
+body.template-theme-hydrolab .selling-points-4-item-title,
+body.template-theme-hydrolab .selling-points-5-item-title {
+  letter-spacing: -0.04em;
+}
+
+body.template-theme-hydrolab .wd-product-before-vs-after {
+  background: transparent;
+}
+
+body.template-theme-hydrolab .product-before-vs-after {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 72px 58px;
+  border-radius: 36px;
+  background:
+    radial-gradient(
+      circle at 90% 12%,
+      rgba(81, 202, 214, 0.18),
+      transparent 24%
+    ),
+    linear-gradient(135deg, #0d2334 0%, #12374b 54%, #164d65 100%);
+  box-shadow: 0 34px 90px rgba(9, 21, 33, 0.18);
+}
+
+body.template-theme-hydrolab .product-before-vs-after__heading,
+body.template-theme-hydrolab .product-before-vs-after__subheading,
+body.template-theme-hydrolab .product-before-vs-after__tabs-item {
+  color: #fff;
+}
+
+body.template-theme-hydrolab .product-before-vs-after__subheading {
+  opacity: 0.72;
+}
+
+body.template-theme-hydrolab .product-before-vs-after__tabs {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+body.template-theme-hydrolab .product-before-vs-after__tabs-item {
+  opacity: 0.56;
+}
+
+body.template-theme-hydrolab .product-before-vs-after__tabs-item.is-active {
+  opacity: 1;
+}
+
+body.template-theme-hydrolab
+  .product-before-vs-after__tabs-item.is-active::after {
+  background: #7cd7df;
+}
+
+body.template-theme-hydrolab .product-before-vs-after__comparison {
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.template-theme-hydrolab .product-before-vs-after__handle {
+  background: #fff;
+  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.18);
+}
+
+body.template-theme-hydrolab .product-before-vs-after__handle::before,
+body.template-theme-hydrolab .product-before-vs-after__handle::after {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+body.template-theme-hydrolab .product-media-switch__inner,
+body.template-theme-hydrolab .product-waterdrop-animation__container,
+body.template-theme-hydrolab .media-with-text-container,
+body.template-theme-hydrolab .select-guide-inner,
+body.template-theme-hydrolab .wd-reviews,
+body.template-theme-hydrolab .wd-faq-inner {
+  padding: 40px;
+}
+
+body.template-theme-hydrolab .product-media-switch__button {
+  border-radius: 999px;
+}
+
+body.template-theme-hydrolab .product-card-splide_slide {
+  border-radius: 26px;
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  background: linear-gradient(180deg, #ffffff, #f4fbfc);
+  box-shadow: 0 18px 44px rgba(9, 21, 33, 0.07);
+}
+
+body.template-theme-hydrolab .product-card-splide_slide-image {
+  border-radius: 24px;
+}
+
+body.template-theme-hydrolab
+  .wd-product-card-splide
+  .splide__arrows.product-more-points-arrows {
+  right: 24px;
+  bottom: 28px;
+}
+
+body.template-theme-hydrolab .product-card-splide-bottom-spacing::after {
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      rgba(124, 215, 223, 0.25),
+      transparent 40%
+    ),
+    linear-gradient(180deg, #eef7f9, rgba(255, 255, 255, 0.85));
+}
+
+body.template-theme-hydrolab .wd-product-compare {
+  overflow: hidden;
+}
+
+body.template-theme-hydrolab .wd-product-compare__table {
+  background: transparent;
+}
+
+body.template-theme-hydrolab .wd-product-compare__title-cell h2,
+body.template-theme-hydrolab .wd-product-compare__title-cell span {
+  color: #103547;
+}
+
+body.template-theme-hydrolab .wd-product-compare__product-th,
+body.template-theme-hydrolab .wd-product-compare__tbody td {
+  background: rgba(255, 255, 255, 0.74);
+}
+
+body.template-theme-hydrolab .wd-product-compare__sticky-bar {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.template-theme-hydrolab .select-guide {
+  background: transparent;
+}
+
+body.template-theme-hydrolab .select-guide-inner {
+  background:
+    radial-gradient(
+      circle at 20% 0,
+      rgba(124, 215, 223, 0.22),
+      transparent 26%
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 250, 251, 0.9));
+}
+
+body.template-theme-hydrolab .select-guide-heading h2 {
+  max-width: 12ch;
+  letter-spacing: -0.05em;
+}
+
+body.template-theme-hydrolab .select-guide-description {
+  color: #5f6f7b;
+}
+
+body.template-theme-hydrolab .wd-reviews-intro {
+  gap: 18px;
+}
+
+body.template-theme-hydrolab .wd-reviews-title {
+  color: #0f8a97;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+body.template-theme-hydrolab .wd-reviews-subtitle,
+body.template-theme-hydrolab .wd-faq-heading {
+  letter-spacing: -0.05em;
+}
+
+body.template-theme-hydrolab .wd-reviews-tab-list {
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(223, 245, 247, 0.86);
+}
+
+body.template-theme-hydrolab .wd-reviews-tab-list::after {
+  display: none;
+}
+
+body.template-theme-hydrolab .wd-reviews-tab {
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+body.template-theme-hydrolab .wd-reviews-tab-active {
+  color: #fff;
+  background: linear-gradient(135deg, #103547, #0f8a97);
+}
+
+body.template-theme-hydrolab .wd-review-card {
+  border: 1px solid rgba(18, 52, 71, 0.08);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #ffffff, #f6fbfc);
+  box-shadow: 0 18px 36px rgba(9, 21, 33, 0.05);
+}
+
+body.template-theme-hydrolab .wd-review-card__avatar {
+  background: linear-gradient(135deg, #103547, #0f8a97);
+}
+
+body.template-theme-hydrolab .wd-faq-subheading {
+  color: #60707d;
+}
+
+body.template-theme-hydrolab details.wd-faq-item {
+  border-bottom-color: rgba(18, 52, 71, 0.08);
+}
+
+body.template-theme-hydrolab .wd-faq-item-active .wd-faq-item-title {
+  color: #103547;
+}
+
+body.template-theme-hydrolab .wd-faq-item-icon {
+  border-radius: 999px;
+  background: rgba(223, 245, 247, 0.92);
+}
+
+body.template-theme-hydrolab .wd-faq-toggle-more {
+  border-radius: 999px;
+  border: 1px solid rgba(18, 52, 71, 0.1);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+@media screen and (max-width: 1024px) {
+  body.template-theme-hydrolab .template-topbar {
+    width: min(calc(100% - 28px), 1240px);
+  }
+
+  body.template-theme-hydrolab .template-topbar__inner {
+    padding: 16px 22px;
+  }
+
+  body.template-theme-hydrolab .template-hero__gallery,
+  body.template-theme-hydrolab .template-hero__content,
+  body.template-theme-hydrolab .selling-points-card,
+  body.template-theme-hydrolab .product-media-switch__inner,
+  body.template-theme-hydrolab .product-waterdrop-animation__container,
+  body.template-theme-hydrolab .media-with-text-container,
+  body.template-theme-hydrolab .wd-product-card-splide,
+  body.template-theme-hydrolab .wd-product-compare,
+  body.template-theme-hydrolab .select-guide-inner,
+  body.template-theme-hydrolab .wd-reviews,
+  body.template-theme-hydrolab .wd-faq-inner {
+    border-radius: 28px;
+  }
+
+  body.template-theme-hydrolab .template-hero__content {
+    padding: 28px;
+  }
+
+  body.template-theme-hydrolab .product-before-vs-after {
+    padding: 52px 34px;
+    border-radius: 30px;
+  }
+
+  body.template-theme-hydrolab .product-media-switch__inner,
+  body.template-theme-hydrolab .product-waterdrop-animation__container,
+  body.template-theme-hydrolab .media-with-text-container,
+  body.template-theme-hydrolab .select-guide-inner,
+  body.template-theme-hydrolab .wd-reviews,
+  body.template-theme-hydrolab .wd-faq-inner {
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  body.template-theme-hydrolab .template-topbar {
+    top: 8px;
+    width: calc(100% - 16px);
+    border-radius: 18px;
+  }
+
+  body.template-theme-hydrolab .template-topbar__inner {
+    padding: 14px 16px;
+  }
+
+  body.template-theme-hydrolab .template-topbar__brand {
+    gap: 8px;
+  }
+
+  body.template-theme-hydrolab .template-logo {
+    font-size: 20px;
+  }
+
+  body.template-theme-hydrolab .template-topbar__menu-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  body.template-theme-hydrolab .template-mobile-menu__panel {
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: calc(100vw - 16px);
+    border-radius: 24px;
+  }
+
+  body.template-theme-hydrolab .template-mobile-menu__header {
+    padding: 16px 16px 14px;
+  }
+
+  body.template-theme-hydrolab .template-mobile-menu__body {
+    padding: 8px 16px 20px;
+  }
+
+  body.template-theme-hydrolab .template-variant-badge {
+    min-height: 24px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  body.template-theme-hydrolab .template-hero {
+    padding-top: 20px;
+    padding-bottom: 72px;
+  }
+
+  body.template-theme-hydrolab .template-hero__gallery,
+  body.template-theme-hydrolab .template-hero__content {
+    border-radius: 24px;
+  }
+
+  body.template-theme-hydrolab .template-hero__gallery {
+    padding: 18px;
+  }
+
+  body.template-theme-hydrolab .template-hero__content {
+    padding: 22px;
+  }
+
+  body.template-theme-hydrolab .template-hero__media-tabs {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  body.template-theme-hydrolab .template-hero__media-tab {
+    flex: 1 1 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  body.template-theme-hydrolab .template-hero h1 {
+    max-width: none;
+    font-size: 31px;
+  }
+
+  body.template-theme-hydrolab .template-hero__price {
+    font-size: 34px;
+  }
+
+  body.template-theme-hydrolab .template-hero__features li {
+    padding: 14px 14px 14px 42px;
+    border-radius: 16px;
+  }
+
+  body.template-theme-hydrolab .template-hero__cta-row {
+    gap: 10px;
+  }
+
+  body.template-theme-hydrolab.template-sticky-purchase-active {
+    padding-bottom: 170px;
+  }
+
+  body.template-theme-hydrolab .template-sticky-purchase__inner {
+    padding-top: 12px;
+  }
+
+  body.template-theme-hydrolab .template-sticky-purchase__price {
+    font-size: 22px;
+  }
+
+  body.template-theme-hydrolab .product-before-vs-after {
+    padding: 34px 20px;
+    border-radius: 24px;
+  }
+
+  body.template-theme-hydrolab .product-media-switch__inner,
+  body.template-theme-hydrolab .product-waterdrop-animation__container,
+  body.template-theme-hydrolab .media-with-text-container,
+  body.template-theme-hydrolab .wd-product-card-splide,
+  body.template-theme-hydrolab .wd-product-compare,
+  body.template-theme-hydrolab .select-guide-inner,
+  body.template-theme-hydrolab .wd-reviews,
+  body.template-theme-hydrolab .wd-faq-inner {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  body.template-theme-hydrolab .wd-reviews-tab-list {
+    padding: 6px;
+  }
+
+  body.template-theme-hydrolab .wd-review-card {
+    border-radius: 18px;
+  }
+}
