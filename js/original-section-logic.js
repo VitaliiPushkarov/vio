@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('productNav')
     const placeholder = document.getElementById('productNavPlaceholder')
     const navContainer = document.getElementById('productNavContainer')
+    if (!nav || !placeholder || !navContainer) return
     const navItems = Array.from(nav.querySelectorAll('.product-nav__item'))
 
     const targetSections = [
@@ -337,8 +338,8 @@ try {
 
       
       Promise.all([
-        loadGsapScript('../../../template/local/assets/remote/www.waterdropfilter.eu/cdn/shop/t/38/assets/vendor-gsap.min.js', 'gsap-lib'),
-        loadGsapScript('../../../template/local/assets/remote/www.waterdropfilter.eu/cdn/shop/t/38/assets/vendor-gsap-scroll-trigger.min.js', 'gsap-scrolltrigger')
+        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap-lib'),
+        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'gsap-scrolltrigger')
       ])
         .then(initAnimation)
         .catch(error => console.error('Failed to load GSAP libraries:', error));
@@ -459,8 +460,8 @@ try {
 
       
       Promise.all([
-        loadGsapScript('../../../template/local/assets/remote/www.waterdropfilter.eu/cdn/shop/t/38/assets/vendor-gsap.min.js', 'gsap-lib'),
-        loadGsapScript('../../../template/local/assets/remote/www.waterdropfilter.eu/cdn/shop/t/38/assets/vendor-gsap-scroll-trigger.min.js', 'gsap-scrolltrigger')
+        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap-lib'),
+        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'gsap-scrolltrigger')
       ])
         .then(initAnimation)
         .catch(error => console.error('Failed to load GSAP libraries:', error));
