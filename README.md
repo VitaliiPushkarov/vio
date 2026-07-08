@@ -5,24 +5,11 @@ This package was generated from the uploaded live-site HTML export `index.html`.
 ## Files
 
 - `index.html` — cleaned editable page structure.
-- `index-variant-b.html` — alternative landing design variant for visual comparison.
 - `css/styles.css` — base template CSS + original section CSS extracted from the source page.
 - `css/styles-variant-b.css` — visual override theme used by `index-variant-b.html`.
 - `js/template.js` — clean custom logic for gallery, navigation, FAQ, tabs, videos and before/after sliders.
 - `js/original-section-logic.js` — non-tracking original section UI scripts extracted from the source, wrapped safely.
 - `asset-map.json` — reference map of original source URLs to the mirrored/localized assets.
-
-## What was removed
-
-The clean version removes the heavy live-site boilerplate:
-- Shopify checkout/runtime scripts
-- Google Tag Manager / GA / Ads
-- Microsoft Clarity
-- Sentry
-- consent manager
-- GeoPro / Blockify / fraud-filter app code
-- most third-party app bootstrap scripts
-- live cart form submission behavior
 
 ## What was kept
 

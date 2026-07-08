@@ -1681,6 +1681,7 @@ form[data-template-disabled='true'] {
     min-height: 46px;
     padding-left: 14px;
     padding-right: 14px;
+    text-align: center;
   }
 
   .template-benefits__trigger,

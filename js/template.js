@@ -188,42 +188,68 @@
     customElements.define('splide-slider', SplideSlider)
   }
 
-  function hydrateComponentVideos() {
-    $$('component-video').forEach((component) => {
-      if (component.dataset.videoHydrated === 'true') return
+  function componentWantsAutoplay(component, video = null) {
+    if (component.hasAttribute('autoplay')) return true
+    if (video?.hasAttribute('autoplay')) return true
 
+    const template = $('template', component)
+    const templateVideo = template?.content?.querySelector('video')
+    return !!templateVideo?.hasAttribute('autoplay')
+  }
+
+  function hydrateComponentVideo(component) {
+    const existingVideo = $('video', component)
+    if (component.dataset.videoHydrated === 'true' && existingVideo) {
+      return existingVideo
+    }
+
+    let video = existingVideo
+
+    if (!video) {
       const template = $('template', component)
-      if (!template) return
+      if (!template) return null
 
       const fragment = template.content.cloneNode(true)
-      const video = $('video', fragment)
-      if (!video) return
-
-      const wantsAutoplay =
-        component.hasAttribute('autoplay') || video.hasAttribute('autoplay')
-
-      video.setAttribute('playsinline', '')
-      video.setAttribute('webkit-playsinline', '')
-      video.playsInline = true
-
-      if (wantsAutoplay) {
-        video.autoplay = true
-        video.defaultMuted = true
-        video.muted = true
-        video.setAttribute('autoplay', 'autoplay')
-        video.setAttribute('muted', 'muted')
-        video.dataset.autoplayManaged = 'true'
-      }
+      video = $('video', fragment)
+      if (!video) return null
 
       component.insertBefore(fragment, template)
       template.remove()
+    }
 
-      if (component.querySelector(':scope > img')) {
-        component.classList.add('has-preview')
-      }
+    const wantsAutoplay = componentWantsAutoplay(component, video)
 
-      component.dataset.videoHydrated = 'true'
-    })
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
+    video.playsInline = true
+
+    if (wantsAutoplay) {
+      video.autoplay = true
+      video.defaultMuted = true
+      video.muted = true
+      video.setAttribute('autoplay', 'autoplay')
+      video.setAttribute('muted', 'muted')
+      video.dataset.autoplayManaged = 'true'
+    }
+
+    if (component.querySelector(':scope > img')) {
+      component.classList.add('has-preview')
+    }
+
+    component.dataset.videoHydrated = 'true'
+
+    return video
+  }
+
+  function isComponentVideoRenderable(component) {
+    if (!(component instanceof HTMLElement)) return false
+
+    const styles = window.getComputedStyle(component)
+    if (styles.display === 'none' || styles.visibility === 'hidden') {
+      return false
+    }
+
+    return component.getClientRects().length > 0
   }
 
   function initHeroGallery() {
@@ -886,8 +912,6 @@
   }
 
   function initComponentVideos() {
-    hydrateComponentVideos()
-
     const autoplayObserver =
       'IntersectionObserver' in window
         ? new IntersectionObserver(
@@ -898,6 +922,12 @@
                 if (video.offsetParent === null) return
 
                 if (entry.isIntersecting) {
+                  if (video.preload === 'none') {
+                    video.preload = 'metadata'
+                    try {
+                      video.load()
+                    } catch (_) {}
+                  }
                   if (video.dataset.userPaused === 'true') return
                   video.defaultMuted = true
                   video.muted = true
@@ -914,15 +944,17 @@
           )
         : null
 
-    $$('component-video').forEach((component) => {
-      const video = $('video', component)
-      if (!video) return
+    const setupComponentVideo = (component) => {
+      if (component.dataset.videoSetup === 'true') {
+        return $('video', component)
+      }
+
+      const video = hydrateComponentVideo(component)
+      if (!video) return null
 
       const previewImage = $(':scope > img', component)
       const playButton = $('.deferred-play-btn', component)
-      const wantsAutoplay =
-        component.hasAttribute('autoplay') ||
-        video.dataset.autoplayManaged === 'true'
+      const wantsAutoplay = componentWantsAutoplay(component, video)
 
       const syncState = (playing) => {
         component.classList.toggle('is-playing', playing)
@@ -940,7 +972,8 @@
         if (previewImage) previewImage.setAttribute('aria-hidden', 'true')
       }
 
-      video.preload = wantsAutoplay ? 'auto' : 'metadata'
+      component.dataset.videoSetup = 'true'
+      video.preload = 'none'
       video.addEventListener('play', () => syncState(true))
       video.addEventListener('pause', () => syncState(false))
       video.addEventListener('ended', () => syncState(false))
@@ -959,6 +992,12 @@
       if (playButton) {
         playButton.addEventListener('click', (event) => {
           event.preventDefault()
+          if (video.preload === 'none') {
+            video.preload = 'metadata'
+            try {
+              video.load()
+            } catch (_) {}
+          }
           if (video.paused || video.ended) {
             video.dataset.userPaused = 'false'
             video.defaultMuted = true
@@ -978,9 +1017,121 @@
       if (wantsAutoplay) {
         if (autoplayObserver) autoplayObserver.observe(video)
         else {
+          if (video.preload === 'none') {
+            video.preload = 'metadata'
+            try {
+              video.load()
+            } catch (_) {}
+          }
           video.defaultMuted = true
           video.muted = true
           video.play().catch(() => {})
+        }
+      }
+
+      return video
+    }
+
+    const hydrateAndMaybePlay = (component, shouldPlay = false) => {
+      const video = setupComponentVideo(component)
+      if (!video) return null
+
+      if (!shouldPlay) return video
+
+      if (video.preload === 'none') {
+        video.preload = 'metadata'
+        try {
+          video.load()
+        } catch (_) {}
+      }
+
+      video.dataset.userPaused = 'false'
+      video.defaultMuted = true
+      video.muted = true
+      video.play().catch(() => {})
+
+      return video
+    }
+ 
+    const hydrationObserver =
+      'IntersectionObserver' in window
+        ? new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return
+                const component = entry.target
+                if (!(component instanceof HTMLElement)) return
+                if (!isComponentVideoRenderable(component)) return
+
+                setupComponentVideo(component)
+                hydrationObserver.unobserve(component)
+              })
+            },
+            { threshold: 0.01, rootMargin: '120px 0px' },
+          )
+        : null
+
+    $$('component-video').forEach((component) => {
+      const playButton = $('.deferred-play-btn', component)
+      const previewImage = $(':scope > img', component)
+      const wantsAutoplay = componentWantsAutoplay(component)
+
+      if (playButton) {
+        playButton.addEventListener('click', (event) => {
+          event.preventDefault()
+          const video = hydrateAndMaybePlay(component)
+          if (!video) return
+
+          if (video.paused || video.ended) {
+            video.dataset.userPaused = 'false'
+            video.defaultMuted = true
+            video.muted = true
+            video.play().catch(() => {})
+          } else {
+            video.dataset.userPaused = 'true'
+            video.pause()
+          }
+        })
+      } else if (previewImage && !wantsAutoplay) {
+        previewImage.addEventListener('click', () => {
+          hydrateAndMaybePlay(component, true)
+        })
+      }
+
+      if (previewImage && !wantsAutoplay) {
+        const warmVideo = () => {
+          const video = setupComponentVideo(component)
+          if (!video || video.preload !== 'none') return
+
+          video.preload = 'metadata'
+          try {
+            video.load()
+          } catch (_) {}
+        }
+
+        previewImage.addEventListener('pointerenter', warmVideo, {
+          once: true,
+        })
+        previewImage.addEventListener('touchstart', warmVideo, {
+          once: true,
+          passive: true,
+        })
+      }
+
+      if (!hydrationObserver) {
+        setupComponentVideo(component)
+      } else {
+        hydrationObserver.observe(component)
+
+        if (wantsAutoplay && isComponentVideoRenderable(component)) {
+          const rect = component.getBoundingClientRect()
+          const viewportHeight =
+            window.innerHeight || document.documentElement.clientHeight || 0
+
+          if (rect.top < viewportHeight && rect.bottom > 0) {
+            setupComponentVideo(component)
+            hydrationObserver.unobserve(component)
+          }
         }
       }
     })
@@ -994,10 +1145,6 @@
       $$('source', video).forEach((source) => {
         if (source.dataset.src && !source.src) source.src = source.dataset.src
       })
-      try {
-        video.load()
-        if (video.hasAttribute('autoplay')) video.play().catch(() => {})
-      } catch (_) {}
     })
   }
 
