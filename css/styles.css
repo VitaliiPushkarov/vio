@@ -491,7 +491,7 @@ textarea {
   height: 46px;
   padding: 0;
   border: none;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   color: var(--color-text-primary, #000);
   cursor: pointer;
   align-items: center;
@@ -1828,9 +1828,9 @@ form[data-template-disabled='true'] {
   .template-sticky-purchase__actions .template-button {
     width: 100%;
     min-width: 0;
-    min-height: 46px;
-    padding-left: 14px;
-    padding-right: 14px;
+    min-height: 38px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
   }
 
@@ -5928,5 +5928,17 @@ body.template-theme-hydrolab .vio-footer {
   }
   .vio-footer__phone-list {
     align-items: center;
+  }
+  .template-logo img {
+    height: 48px;
+    width: 48px;
+  }
+  .template-topbar__inner {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .vio-footer__logo {
+    height: 48px;
+    width: 48px;
   }
 }
