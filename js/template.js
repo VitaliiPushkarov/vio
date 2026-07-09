@@ -295,6 +295,9 @@
       let isLightboxOpen = false
       let lastFocusedElement = null
       let suppressZoomClick = false
+      const imagePreloadTasks = new Map()
+      let mainImageRequestId = 0
+      let lightboxImageRequestId = 0
 
       const normalizeIndex = (index, length) => {
         if (!length) return 0
@@ -307,6 +310,90 @@
       const syncCounter = () => {
         if (!counter) return
         counter.textContent = `${currentImageIndex + 1}/${thumbs.length}`
+      }
+
+      const getThumbSources = (thumb) => ({
+        displaySrc: thumb?.dataset.gallerySrc || '',
+        fullSrc: thumb?.dataset.galleryFullSrc || thumb?.dataset.gallerySrc || '',
+      })
+
+      const preloadImage = (src) => {
+        if (!src) return Promise.resolve()
+        if (imagePreloadTasks.has(src)) return imagePreloadTasks.get(src)
+
+        const task = new Promise((resolve) => {
+          const probe = new Image()
+          let settled = false
+          const done = () => {
+            if (settled) return
+            settled = true
+            resolve()
+          }
+
+          probe.decoding = 'async'
+          probe.onload = done
+          probe.onerror = done
+          probe.src = src
+
+          if (probe.complete) done()
+        })
+
+        imagePreloadTasks.set(src, task)
+        return task
+      }
+
+      const queueImageUpdate = (imageEl, src, alt, target = 'main') => {
+        if (!imageEl || !src) return
+
+        if (imageEl.getAttribute('src') === src) {
+          if (alt) imageEl.alt = alt
+          return
+        }
+
+        const requestId =
+          target === 'lightbox'
+            ? ++lightboxImageRequestId
+            : ++mainImageRequestId
+
+        preloadImage(src).finally(() => {
+          const currentRequestId =
+            target === 'lightbox' ? lightboxImageRequestId : mainImageRequestId
+          if (requestId !== currentRequestId) return
+
+          imageEl.src = src
+          if (alt) imageEl.alt = alt
+        })
+      }
+
+      const scheduleIdleWork = (callback) => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(callback, { timeout: 900 })
+        } else {
+          window.setTimeout(callback, 180)
+        }
+      }
+
+      const warmAdjacentImages = () => {
+        if (thumbs.length < 2) return
+
+        const nextThumb = thumbs[normalizeIndex(currentImageIndex + 1, thumbs.length)]
+        const prevThumb = thumbs[normalizeIndex(currentImageIndex - 1, thumbs.length)]
+
+        ;[nextThumb, prevThumb].forEach((thumb) => {
+          const src = getThumbSources(thumb).displaySrc
+          if (!src) return
+
+          scheduleIdleWork(() => {
+            preloadImage(src)
+          })
+        })
+      }
+
+      const warmCurrentLightboxImage = () => {
+        const activeThumb = thumbs[currentImageIndex]
+        if (!activeThumb) return
+
+        preloadImage(getThumbSources(activeThumb).fullSrc)
       }
 
       const markSwipeHandled = () => {
@@ -427,20 +514,17 @@
         })
 
         const activeThumb = thumbs[currentImageIndex]
-        const src = activeThumb?.dataset.gallerySrc
         const thumbImage = $('img', activeThumb)
+        const { displaySrc, fullSrc } = getThumbSources(activeThumb)
+        const alt = thumbImage?.alt || main.alt || ''
 
-        if (src) {
-          main.src = src
-          if (lightboxImage) lightboxImage.src = src
-        }
-
-        if (thumbImage?.alt) {
-          main.alt = thumbImage.alt
-          if (lightboxImage) lightboxImage.alt = thumbImage.alt
+        queueImageUpdate(main, displaySrc, alt)
+        if (isLightboxOpen) {
+          queueImageUpdate(lightboxImage, fullSrc, alt, 'lightbox')
         }
 
         syncCounter()
+        warmAdjacentImages()
       }
 
       const setActiveVideo = (index, options = {}) => {
@@ -499,11 +583,21 @@
         if (!lightbox || !lightboxImage || !lightboxDialog) return
 
         setActiveImage(currentImageIndex)
+        const activeThumb = thumbs[currentImageIndex]
+        const thumbImage = $('img', activeThumb)
+        const { fullSrc } = getThumbSources(activeThumb)
+
         isLightboxOpen = true
         lastFocusedElement = document.activeElement
         lightbox.classList.add('is-open')
         lightbox.setAttribute('aria-hidden', 'false')
         document.body.classList.add('template-hero-lightbox-open')
+        queueImageUpdate(
+          lightboxImage,
+          fullSrc,
+          thumbImage?.alt || main.alt || '',
+          'lightbox',
+        )
 
         lightboxDialog.focus({ preventScroll: true })
       }
@@ -549,6 +643,14 @@
       }
 
       if (zoomTrigger) {
+        zoomTrigger.addEventListener('pointerenter', warmCurrentLightboxImage, {
+          passive: true,
+        })
+        zoomTrigger.addEventListener('touchstart', warmCurrentLightboxImage, {
+          passive: true,
+        })
+        zoomTrigger.addEventListener('focus', warmCurrentLightboxImage)
+
         zoomTrigger.addEventListener('click', (event) => {
           if (suppressZoomClick) {
             event.preventDefault()
