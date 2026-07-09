@@ -1,6 +1,5 @@
-/* ORIGINAL UI SCRIPT FROM SECTION 1: shopify-section-template--16398653784144__product_nav_8dmmdt */
 try {
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('productNav')
     const placeholder = document.getElementById('productNavPlaceholder')
     const navContainer = document.getElementById('productNavContainer')
@@ -8,41 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const navItems = Array.from(nav.querySelectorAll('.product-nav__item'))
 
     const targetSections = [
-      
-        
-          'wd-product-anchor-overview'
-        ,
-      
-        
-          'wd-product-anchor-specs'
-        ,
-      
-        
-          'wd-product-anchor-compares'
-        ,
-      
-        
-          'wd-product-anchor-reviews'
-        ,
-      
-        
-          'wd-product-anchor-faqs'
-        
-      
+      'wd-product-anchor-overview',
+
+      'wd-product-anchor-specs',
+
+      'wd-product-anchor-compares',
+
+      'wd-product-anchor-reviews',
+
+      'wd-product-anchor-faqs',
     ]
 
-    
-    const sectionEls = targetSections.map(cls =>
-      cls ? document.querySelector('.' + cls) : null
+    const sectionEls = targetSections.map((cls) =>
+      cls ? document.querySelector('.' + cls) : null,
     )
 
     const state = {
       activeIndex: 0,
       isAutoScrolling: false,
-      ticking: false
+      ticking: false,
     }
 
-    
     function setActiveItem(index) {
       if (state.activeIndex === index) return
       navItems.forEach((item, i) => {
@@ -52,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollNavIntoView(index)
     }
 
-    
     function scrollNavIntoView(index) {
       const item = navItems[index]
       if (!item) return
@@ -62,48 +46,39 @@ document.addEventListener('DOMContentLoaded', () => {
       const containerLeft = navContainer.scrollLeft
       const containerRight = containerLeft + navContainer.clientWidth
 
-      
       if (itemLeft < containerLeft) {
         navContainer.scrollTo({ left: itemLeft, behavior: 'smooth' })
-      }
-      
-      else if (itemRight > containerRight) {
+      } else if (itemRight > containerRight) {
         navContainer.scrollTo({
           left: itemRight - navContainer.clientWidth,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
     }
 
-    
     navItems.forEach((item, index) => {
-      item.addEventListener('click', e => {
+      item.addEventListener('click', (e) => {
         e.preventDefault()
 
         const target = sectionEls[index]
         if (!target) return
 
-        
         state.isAutoScrolling = true
         setActiveItem(index)
 
-        
-        const offset =
-          nav.classList.contains('product-nav-fixed')
-            ? nav.offsetHeight
-            : 0
+        const offset = nav.classList.contains('product-nav-fixed')
+          ? nav.offsetHeight
+          : 0
 
         window.scrollTo({
           top: target.offsetTop - offset,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
 
-        
         setTimeout(() => (state.isAutoScrolling = false), 600)
       })
     })
 
-    
     function handleFixed() {
       const rect = placeholder.getBoundingClientRect()
       const shouldFix = rect.top <= 0
@@ -117,9 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    
     function handleActive(scrollY) {
-      
       if (state.isAutoScrolling) return
 
       const navHeight = nav.classList.contains('product-nav-fixed')
@@ -129,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const checkpoint = scrollY + navHeight + 100
       let current = 0
 
-      
       for (let i = 1; i < sectionEls.length; i++) {
         const el = sectionEls[i]
         if (el && checkpoint >= el.offsetTop) {
@@ -142,33 +114,30 @@ document.addEventListener('DOMContentLoaded', () => {
       setActiveItem(current)
     }
 
-    
     function onScroll() {
       if (state.ticking) return
       state.ticking = true
 
       requestAnimationFrame(() => {
-        handleFixed()          
-        handleActive(window.scrollY)  
+        handleFixed()
+        handleActive(window.scrollY)
         state.ticking = false
       })
     }
 
-    
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    
     window.addEventListener('resize', () => {
       if (nav.classList.contains('product-nav-fixed')) {
         placeholder.style.height = nav.offsetHeight + 'px'
       }
     })
 
-    
     onScroll()
   })
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 16: shopify-section-template--16398653784144__select_guide_Y6F9Db */
 try {
@@ -223,102 +192,105 @@ try {
   if (!customElements.get('select-guide')) {
     customElements.define('select-guide', SelectGuide)
   }
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 5: shopify-section-template--16398653784144__product_waterdrop_animation_gYFahm */
 try {
-;(() => {
-    'use strict';
+  ;(() => {
+    'use strict'
 
-    
     if (window.innerWidth <= 1024) {
-      return;
+      return
     }
 
-    const container = document.querySelector('#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__container');
+    const container = document.querySelector(
+      '#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__container',
+    )
     if (!container) {
-      return;
+      return
     }
 
-    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            observer.unobserve(entry.target); 
-            initWaterDropSection();
+            observer.unobserve(entry.target)
+            initWaterDropSection()
           }
-        });
+        })
       },
       {
         root: null,
-        rootMargin: '1000px', 
-        threshold: 0
-      }
-    );
+        rootMargin: '1000px',
+        threshold: 0,
+      },
+    )
 
-    observer.observe(container);
+    observer.observe(container)
 
     function initWaterDropSection() {
-      
       const loadGsapScript = (src, id) => {
         return new Promise((resolve, reject) => {
           if (document.getElementById(id)) {
-            resolve();
-            return;
+            resolve()
+            return
           }
-          const script = document.createElement('script');
-          script.id = id;
-          script.src = src;
-          script.onload = resolve;
-          script.onerror = () => reject(new Error(`Failed to load: ${src}`));
-          document.body.appendChild(script);
-        });
-      };
+          const script = document.createElement('script')
+          script.id = id
+          script.src = src
+          script.onload = resolve
+          script.onerror = () => reject(new Error(`Failed to load: ${src}`))
+          document.body.appendChild(script)
+        })
+      }
 
-      
       const initAnimation = () => {
         try {
-          if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            console.warn('GSAP libraries not loaded');
-            return;
+          if (
+            typeof gsap === 'undefined' ||
+            typeof ScrollTrigger === 'undefined'
+          ) {
+            console.warn('GSAP libraries not loaded')
+            return
           }
 
-          gsap.registerPlugin(ScrollTrigger);
-          ScrollTrigger.config({ ignoreMobileResize: true });
+          gsap.registerPlugin(ScrollTrigger)
+          ScrollTrigger.config({ ignoreMobileResize: true })
 
-          
-          const productNav = document.querySelector('.product-nav');
+          const productNav = document.querySelector('.product-nav')
           if (productNav) {
-             container.style.top = productNav.offsetHeight + 'px';
+            container.style.top = productNav.offsetHeight + 'px'
           }
 
-          
           const timeline = gsap.timeline({
             scrollTrigger: {
-              trigger: '#template--16398653784144__product_waterdrop_animation_gYFahm',
+              trigger:
+                '#template--16398653784144__product_waterdrop_animation_gYFahm',
               start: 'top top',
               end: 'bottom bottom',
               scrub: 1,
-              invalidateOnRefresh: true
-            }
-          });
+              invalidateOnRefresh: true,
+            },
+          })
 
-          
-          const waterdropImg = container.querySelector('#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__wd-image');
-          const width = window.innerWidth * 1.4;
+          const waterdropImg = container.querySelector(
+            '#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__wd-image',
+          )
+          const width = window.innerWidth * 1.4
           if (waterdropImg) {
             timeline.to(waterdropImg, {
               width: `${width}px`,
               opacity: 1,
               duration: 3,
-              ease: 'power2.inOut'
-            });
+              ease: 'power2.inOut',
+            })
           }
 
-          
-          const content = container.querySelector('#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__content');
+          const content = container.querySelector(
+            '#template--16398653784144__product_waterdrop_animation_gYFahm .product-waterdrop-animation__content',
+          )
           if (content) {
             timeline.to(
               content,
@@ -326,121 +298,131 @@ try {
                 height: 'auto',
                 opacity: 1,
                 duration: 1,
-                ease: 'power2.inOut'
+                ease: 'power2.inOut',
               },
-              '<0.3'
-            );
+              '<0.3',
+            )
           }
         } catch (error) {
-          console.error('Animation initialization failed:', error);
+          console.error('Animation initialization failed:', error)
         }
-      };
+      }
 
-      
       Promise.all([
-        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap-lib'),
-        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'gsap-scrolltrigger')
+        loadGsapScript(
+          'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+          'gsap-lib',
+        ),
+        loadGsapScript(
+          'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+          'gsap-scrolltrigger',
+        ),
       ])
         .then(initAnimation)
-        .catch(error => console.error('Failed to load GSAP libraries:', error));
+        .catch((error) =>
+          console.error('Failed to load GSAP libraries:', error),
+        )
     }
-  })();
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+  })()
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 7: shopify-section-template--16398653784144__product_waterdrop_animation_VCpKMm */
 try {
-;(() => {
-    'use strict';
+  ;(() => {
+    'use strict'
 
-    
     if (window.innerWidth <= 1024) {
-      return;
+      return
     }
 
-    const container = document.querySelector('#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__container');
+    const container = document.querySelector(
+      '#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__container',
+    )
     if (!container) {
-      return;
+      return
     }
 
-    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            observer.unobserve(entry.target); 
-            initWaterDropSection();
+            observer.unobserve(entry.target)
+            initWaterDropSection()
           }
-        });
+        })
       },
       {
         root: null,
-        rootMargin: '1000px', 
-        threshold: 0
-      }
-    );
+        rootMargin: '1000px',
+        threshold: 0,
+      },
+    )
 
-    observer.observe(container);
+    observer.observe(container)
 
     function initWaterDropSection() {
-      
       const loadGsapScript = (src, id) => {
         return new Promise((resolve, reject) => {
           if (document.getElementById(id)) {
-            resolve();
-            return;
+            resolve()
+            return
           }
-          const script = document.createElement('script');
-          script.id = id;
-          script.src = src;
-          script.onload = resolve;
-          script.onerror = () => reject(new Error(`Failed to load: ${src}`));
-          document.body.appendChild(script);
-        });
-      };
+          const script = document.createElement('script')
+          script.id = id
+          script.src = src
+          script.onload = resolve
+          script.onerror = () => reject(new Error(`Failed to load: ${src}`))
+          document.body.appendChild(script)
+        })
+      }
 
-      
       const initAnimation = () => {
         try {
-          if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            console.warn('GSAP libraries not loaded');
-            return;
+          if (
+            typeof gsap === 'undefined' ||
+            typeof ScrollTrigger === 'undefined'
+          ) {
+            console.warn('GSAP libraries not loaded')
+            return
           }
 
-          gsap.registerPlugin(ScrollTrigger);
-          ScrollTrigger.config({ ignoreMobileResize: true });
+          gsap.registerPlugin(ScrollTrigger)
+          ScrollTrigger.config({ ignoreMobileResize: true })
 
-          
-          const productNav = document.querySelector('.product-nav');
+          const productNav = document.querySelector('.product-nav')
           if (productNav) {
-             container.style.top = productNav.offsetHeight + 'px';
+            container.style.top = productNav.offsetHeight + 'px'
           }
 
-          
           const timeline = gsap.timeline({
             scrollTrigger: {
-              trigger: '#template--16398653784144__product_waterdrop_animation_VCpKMm',
+              trigger:
+                '#template--16398653784144__product_waterdrop_animation_VCpKMm',
               start: 'top top',
               end: 'bottom bottom',
               scrub: 1,
-              invalidateOnRefresh: true
-            }
-          });
+              invalidateOnRefresh: true,
+            },
+          })
 
-          
-          const waterdropImg = container.querySelector('#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__wd-image');
-          const width = window.innerWidth * 1.4;
+          const waterdropImg = container.querySelector(
+            '#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__wd-image',
+          )
+          const width = window.innerWidth * 1.4
           if (waterdropImg) {
             timeline.to(waterdropImg, {
               width: `${width}px`,
               opacity: 1,
               duration: 3,
-              ease: 'power2.inOut'
-            });
+              ease: 'power2.inOut',
+            })
           }
 
-          
-          const content = container.querySelector('#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__content');
+          const content = container.querySelector(
+            '#template--16398653784144__product_waterdrop_animation_VCpKMm .product-waterdrop-animation__content',
+          )
           if (content) {
             timeline.to(
               content,
@@ -448,31 +430,39 @@ try {
                 height: 'auto',
                 opacity: 1,
                 duration: 1,
-                ease: 'power2.inOut'
+                ease: 'power2.inOut',
               },
-              '<0.3'
-            );
+              '<0.3',
+            )
           }
         } catch (error) {
-          console.error('Animation initialization failed:', error);
+          console.error('Animation initialization failed:', error)
         }
-      };
+      }
 
-      
       Promise.all([
-        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'gsap-lib'),
-        loadGsapScript('https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', 'gsap-scrolltrigger')
+        loadGsapScript(
+          'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+          'gsap-lib',
+        ),
+        loadGsapScript(
+          'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+          'gsap-scrolltrigger',
+        ),
       ])
         .then(initAnimation)
-        .catch(error => console.error('Failed to load GSAP libraries:', error));
+        .catch((error) =>
+          console.error('Failed to load GSAP libraries:', error),
+        )
     }
-  })();
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+  })()
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 11: shopify-section-template--16398653784144__product_overview_gallery_GgTagt */
 try {
-;(function () {
+  ;(function () {
     let roots = document.querySelectorAll('.wd-product-splide')
     if (!roots.length) return
 
@@ -512,7 +502,9 @@ try {
         }
 
         function scrollActiveIntoView() {
-          let activeBtn = paginationBox.querySelector('.splide__pagination__page.is-active')
+          let activeBtn = paginationBox.querySelector(
+            '.splide__pagination__page.is-active',
+          )
           if (!activeBtn) return
 
           let boxRect = paginationBox.getBoundingClientRect()
@@ -527,7 +519,7 @@ try {
 
           paginationBox.scrollTo({
             left: targetLeft,
-            behavior: 'smooth'
+            behavior: 'smooth',
           })
         }
 
@@ -544,12 +536,13 @@ try {
       })
     })
   })()
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 12: shopify-section-template--16398653784144__product_influencer_video_iFjKDw */
 try {
-class ProductInfluencerVideoSlider extends HTMLElement {
+  class ProductInfluencerVideoSlider extends HTMLElement {
     constructor() {
       super()
       this.slider = null
@@ -599,14 +592,16 @@ class ProductInfluencerVideoSlider extends HTMLElement {
     }
 
     async initSlider() {
-      const sliderEl = this.querySelector('splide-slider.product-influencer-video-splide')
+      const sliderEl = this.querySelector(
+        'splide-slider.product-influencer-video-splide',
+      )
       if (!sliderEl) return
 
       if (sliderEl.slider) {
         this.slider = sliderEl.slider
         this.onSliderLoaded()
       } else {
-        sliderEl.addEventListener('splide:loaded', e => {
+        sliderEl.addEventListener('splide:loaded', (e) => {
           this.slider = e.detail.slider
           this.onSliderLoaded()
         })
@@ -713,20 +708,28 @@ class ProductInfluencerVideoSlider extends HTMLElement {
       })
 
       if (shouldRefresh && typeof this.slider.refresh === 'function') {
-        const activeIndex = typeof this.slider.index === 'number' ? this.slider.index : 0
+        const activeIndex =
+          typeof this.slider.index === 'number' ? this.slider.index : 0
         this.slider.refresh()
         this.slider.go(activeIndex)
       }
     }
 
     pauseAllVideos() {
-      this.videos.forEach(videoComponent => {
+      this.videos.forEach((videoComponent) => {
         const iframe = videoComponent.querySelector('iframe.js-youtube')
         const video = videoComponent.querySelector('video')
 
         if (iframe && iframe.contentWindow) {
           try {
-            iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: '' }), '*')
+            iframe.contentWindow.postMessage(
+              JSON.stringify({
+                event: 'command',
+                func: 'pauseVideo',
+                args: '',
+              }),
+              '*',
+            )
           } catch (e) {
             console.error('Failed to pause YouTube video:', e)
           }
@@ -740,21 +743,31 @@ class ProductInfluencerVideoSlider extends HTMLElement {
   }
 
   if (!customElements.get('product-influencer-video-slider')) {
-    customElements.define('product-influencer-video-slider', ProductInfluencerVideoSlider)
+    customElements.define(
+      'product-influencer-video-slider',
+      ProductInfluencerVideoSlider,
+    )
   }
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 15: shopify-section-template--16398653784144__product_compare_4QRyy3 */
 try {
-;(() => {
-    const section = document.querySelector('#shopify-section-template--16398653784144__product_compare_4QRyy3')
+  ;(() => {
+    const section = document.querySelector(
+      '#shopify-section-template--16398653784144__product_compare_4QRyy3',
+    )
     if (!section) return
 
     const content = section.querySelector('[data-compare-content]')
     const stickyBar = section.querySelector('[data-compare-sticky-bar]')
-    const stickyScroller = section.querySelector('[data-compare-sticky-scroller]')
-    const productName = section.querySelector('.wd-product-compare__product-name')
+    const stickyScroller = section.querySelector(
+      '[data-compare-sticky-scroller]',
+    )
+    const productName = section.querySelector(
+      '.wd-product-compare__product-name',
+    )
     if (!content || !stickyBar || !stickyScroller || !productName) return
 
     let stickyActive = false
@@ -764,7 +777,8 @@ try {
 
     const getNavOffset = () => {
       const productNav = document.getElementById('productNav')
-      if (!productNav || !productNav.classList.contains('product-nav-fixed')) return 0
+      if (!productNav || !productNav.classList.contains('product-nav-fixed'))
+        return 0
       return productNav.offsetHeight
     }
 
@@ -782,7 +796,7 @@ try {
       isScrollSyncing = false
     }
 
-    const setStickyActive = show => {
+    const setStickyActive = (show) => {
       stickyBar.classList.toggle('is-visible', show)
       stickyBar.setAttribute('aria-hidden', show ? 'false' : 'true')
       document.body.classList.toggle('wd-compare-sticky-active', show)
@@ -798,7 +812,8 @@ try {
       const contentRect = content.getBoundingClientRect()
       const nameRect = productName.getBoundingClientRect()
       const navOffset = getNavOffset()
-      const sectionVisible = contentRect.bottom > 0 && contentRect.top < window.innerHeight
+      const sectionVisible =
+        contentRect.bottom > 0 && contentRect.top < window.innerHeight
 
       let show = stickyActive
       if (!sectionVisible) {
@@ -824,7 +839,9 @@ try {
     }
 
     content.addEventListener('scroll', syncScrollFromContent, { passive: true })
-    stickyScroller.addEventListener('scroll', syncScrollFromSticky, { passive: true })
+    stickyScroller.addEventListener('scroll', syncScrollFromSticky, {
+      passive: true,
+    })
     window.addEventListener('scroll', onScroll, { passive: true })
     mobileMq.addEventListener('change', () => {
       syncScrollFromContent()
@@ -838,44 +855,46 @@ try {
     syncScrollFromContent()
     updateStickyBar()
   })()
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 17: shopify-section-template--16398653784144__product_reviews_detailed_fi9wWH */
 try {
-document.addEventListener('DOMContentLoaded', function () {
-      let container = document.getElementById('review-content')
-      if (!container) return
+  document.addEventListener('DOMContentLoaded', function () {
+    let container = document.getElementById('review-content')
+    if (!container) return
 
-      let tabs = container.querySelectorAll('.wd-reviews-tab')
-      let panes = container.querySelectorAll('.wd-reviews-pane')
+    let tabs = container.querySelectorAll('.wd-reviews-tab')
+    let panes = container.querySelectorAll('.wd-reviews-pane')
 
-      if (tabs.length <= 1 || panes.length <= 1) return
+    if (tabs.length <= 1 || panes.length <= 1) return
 
-      tabs.forEach(function (tab, index) {
-        tab.addEventListener('click', function () {
-          if (tab.classList.contains('wd-reviews-tab-active')) return
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () {
+        if (tab.classList.contains('wd-reviews-tab-active')) return
 
-          tabs.forEach(function (t) {
-            t.classList.remove('wd-reviews-tab-active')
-          })
-          panes.forEach(function (p) {
-            p.classList.remove('wd-reviews-pane-active')
-          })
-
-          tab.classList.add('wd-reviews-tab-active')
-          if (panes[index]) {
-            panes[index].classList.add('wd-reviews-pane-active')
-          }
+        tabs.forEach(function (t) {
+          t.classList.remove('wd-reviews-tab-active')
         })
+        panes.forEach(function (p) {
+          p.classList.remove('wd-reviews-pane-active')
+        })
+
+        tab.classList.add('wd-reviews-tab-active')
+        if (panes[index]) {
+          panes[index].classList.add('wd-reviews-pane-active')
+        }
       })
     })
-} catch (error) { console.warn('Original section script skipped:', error); }
-
+  })
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}
 
 /* ORIGINAL UI SCRIPT FROM SECTION 18: shopify-section-template--16398653784144__product_faq_Dqgdny */
 try {
-document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     const root = document.querySelector('.wd-faq-inner')
     if (!root) return
     if (root.matches('[data-faq-managed="template"]')) return
@@ -923,19 +942,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function closeAll(except) {
-      items.forEach(it => {
+      items.forEach((it) => {
         if (except && it === except) return
-        if (it.classList.contains('wd-faq-item-active') || it.hasAttribute('open')) {
+        if (
+          it.classList.contains('wd-faq-item-active') ||
+          it.hasAttribute('open')
+        ) {
           closeItem(it)
         }
       })
     }
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const { body, inner } = getParts(item)
       if (!body || !inner) return
 
-      const isOpen = item.hasAttribute('open') || item.classList.contains('wd-faq-item-active')
+      const isOpen =
+        item.hasAttribute('open') ||
+        item.classList.contains('wd-faq-item-active')
       if (isOpen) {
         item.classList.add('wd-faq-item-active')
         body.style.maxHeight = inner.scrollHeight + 'px'
@@ -945,11 +969,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     })
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const summary = item.querySelector('summary.wd-faq-item-header')
       if (!summary) return
 
-      summary.addEventListener('click', e => {
+      summary.addEventListener('click', (e) => {
         e.preventDefault()
 
         const isOpen = item.classList.contains('wd-faq-item-active')
@@ -970,9 +994,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeExtraOpenedItems() {
       if (!faqList) return
-      const extraItems = Array.from(faqList.querySelectorAll('details.wd-faq-item.wd-faq-item--extra'))
-      extraItems.forEach(it => {
-        if (it.classList.contains('wd-faq-item-active') || it.hasAttribute('open')) {
+      const extraItems = Array.from(
+        faqList.querySelectorAll('details.wd-faq-item.wd-faq-item--extra'),
+      )
+      extraItems.forEach((it) => {
+        if (
+          it.classList.contains('wd-faq-item-active') ||
+          it.hasAttribute('open')
+        ) {
           closeItem(it)
         }
       })
@@ -993,7 +1022,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('resize', () => {
-      items.forEach(item => {
+      items.forEach((item) => {
         if (!item.classList.contains('wd-faq-item-active')) return
         const { body, inner } = getParts(item)
         if (!body || !inner) return
@@ -1001,4 +1030,6 @@ document.addEventListener('DOMContentLoaded', function () {
       })
     })
   })
-} catch (error) { console.warn('Original section script skipped:', error); }
+} catch (error) {
+  console.warn('Original section script skipped:', error)
+}

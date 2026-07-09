@@ -116,7 +116,7 @@
               height="34"
               draggable="false"
               sizes="100vw"
-              src="img/logo.jpg"
+              src="img/logo-p.png"
               loading="eager"
               data-cmp-info="10"
           /></picture>
@@ -195,6 +195,30 @@
     </div>
 
     <main id="MainContent">
+      <section class="template-video-hero" aria-label="Hero banner">
+        <video
+          autoplay
+          class="template-video-hero__media"
+          loop
+          muted
+          playsinline
+          poster="img/800-preload-1.png"
+          preload="metadata"
+        >
+          <source src="video/filter-system-v-1.mp4" type="video/mp4" />
+        </video>
+        <div class="template-video-hero__overlay" aria-hidden="true"></div>
+        <div class="template-video-hero__content section-container">
+          <h2 class="template-video-hero__title">Система Фільтрації BP-D800G</h2>
+          <button
+            class="template-video-hero__cta"
+            data-scroll-target="#template-hero"
+            type="button"
+          >
+            Досліджуй
+          </button>
+        </div>
+      </section>
       <section
         class="template-hero wd-product-anchor-overview section-container"
         id="template-hero"
@@ -396,7 +420,7 @@
                 >
                   <source
                     data-gallery-video-source
-                    src="video/vio.mp4"
+                    src="video/filter-system-v-1.mp4"
                     type="video/mp4"
                   />
                 </video>
@@ -416,7 +440,7 @@
                   class="template-hero__video-item is-active"
                   data-video-label="Video 1"
                   data-video-poster="img/800.jpeg"
-                  data-video-src="video/vio.mp4"
+                  data-video-src="video/filter-system-v-1.mp4"
                   type="button"
                 ></button>
                 <button
@@ -1037,7 +1061,7 @@
                     poster="img/800.jpeg"
                     preload="none"
                   >
-                    <source src="video/vio.mp4" type="video/mp4" />
+                    <source src="video/filter-system-v-1.mp4" type="video/mp4" />
                     <img src="img/800-preload-1.png" /></video></template
                 ><button
                   aria-label="Video button"
@@ -1098,7 +1122,7 @@
                     poster="img/800-preload-1.png"
                     preload="none"
                   >
-                    <source src="video/vio.mp4" type="video/mp4" />
+                    <source src="video/filter-system-v-1.mp4" type="video/mp4" />
                     <img src="img/800-preload-1.png" /></video></template
                 ><button
                   aria-label="Video button"
@@ -1152,21 +1176,21 @@
                     height="1800"
                     loading="lazy"
                     sizes="min(100vw, var(--spacing-max-content-width-desktop))"
-                    src="img/faceut-prev.png"
+                    src="img/faucet-preload.png"
                     width="1920" /><template
                     ><video
                       loop="loop"
                       muted="muted"
                       playsinline="true"
-                      poster="img/faceut-prev.png"
+                      poster="img/faucet-preload.png"
                       preload="none"
                     >
                       <source
-                        src="video/faucet-v.mp4"
+                        src="video/faucet-p.mp4"
                         type="video/mp4"
                       />
                       <img
-                        src="img/faceut-prev.png"
+                        src="img/faucet-preload.png"
                       /></video></template
                   ><button
                     aria-label="Video button"
@@ -1867,7 +1891,7 @@
                       preload="none"
                     >
                       <source
-                        src="video/78cf3922363947d292d6f19492704e3f.HD-1080p-7.2Mbps-80995526__fa2abe82fa.mp4"
+                        src="video/section-6-v.mp4"
                         type="video/mp4"
                       />
                       <img
@@ -1923,22 +1947,22 @@
                     height="900"
                     loading="lazy"
                     sizes="min(100vw, var(--spacing-max-content-width-desktop))"
-                    src="img/faceut-prev.png"
+                    src="img/faceut-preload.png"
                     width="1028" /><template
                     ><video
                       autoplay="autoplay"
                       loop="loop"
                       muted="muted"
                       playsinline="true"
-                      poster="img/faceut-prev.png"
+                      poster="img/faceut-preload.png"
                       preload="none"
                     >
                       <source
-                        src="video/822afe0f5b6e488db7c99b23c82943fc.HD-720p-1.6Mbps-80996025__1d5393ed2f.mp4"
+                        src="video/faucet-p.mp4"
                         type="video/mp4"
                       />
                       <img
-                        src="img/faceut-prev.png"
+                        src="img/faceut-preload.png"
                       /></video></template
                 ></component-video>
               </div>
@@ -2224,7 +2248,7 @@
               <div class="media-with-text__content">
                 <div class="media-with-text__header">
                    <p class="media-with-text__label">Інсталяція</p>
-                <h2 class="media-with-text__title">Легка інсталяція за 30 хвилин</h2>
+                <h2 class="media-with-text__title">Легка інсталяція  <span class="text-label-green">за 30 хвилин</span></h2>
                 </div>
                 
                
@@ -2463,39 +2487,43 @@
             <div class="splide__track only_swiper">
               <ul class="splide__list">
                 <li class="splide__slide wd-image-splide-item">
-                  <picture>
-                    <source
-                      media="(min-width: 768px)"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px" />
+                  <picture class="wd-image-splide-picture">
                     <source
                       media="(max-width: 767px)"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px" />
+                      sizes="100vw"
+                      srcset="img/wd-product-X12-EU-IMG1-mobile-local.png" />
+                    <source
+                      media="(min-width: 768px)"
+                      sizes="(max-width: 1024px) calc(100vw - 80px), 1280px"
+                      srcset="img/wd-product-X12-EU-IMG1-PC__3678d3a942.png" />
                     <img
-                      alt="More Details about Product X12"
+                      alt="Більше деталей про систему BP-D800G"
                       class="component-image"
                       draggable="false"
                       height="848"
                       loading="lazy"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px"
+                      sizes="(max-width: 767px) 100vw, (max-width: 1024px) calc(100vw - 80px), 1280px"
                       src="img/wd-product-X12-EU-IMG1-PC__3678d3a942.png"
                       width="1855"
                   /></picture>
                 </li>
                 <li class="splide__slide wd-image-splide-item">
-                  <picture>
-                    <source
-                      media="(min-width: 768px)"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px" />
+                  <picture class="wd-image-splide-picture">
                     <source
                       media="(max-width: 767px)"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px" />
+                      sizes="100vw"
+                      srcset="img/vio-new-vis-Authentication-img2-mobile-local.jpg" />
+                    <source
+                      media="(min-width: 768px)"
+                      sizes="(max-width: 1024px) calc(100vw - 80px), 1280px"
+                      srcset="img/vio-new-vis-Authentication-img2-pc__cf5f230a4f.jpg" />
                     <img
-                      alt="Reddot Design Award Winner X12"
+                      alt="Дизайн та особливості системи BP-D800G"
                       class="component-image"
                       draggable="false"
                       height="1080"
                       loading="lazy"
-                      sizes="(max-width: 767px) 767px, (max-width: 1024px) 1024px, 1280px"
+                      sizes="(max-width: 767px) 100vw, (max-width: 1024px) calc(100vw - 80px), 1280px"
                       src="img/vio-new-vis-Authentication-img2-pc__cf5f230a4f.jpg"
                       width="2368"
                   /></picture>
@@ -2556,7 +2584,7 @@
 
       <!-- ORIGINAL SECTION 12 -->
       <section
-        class="shopify-section wd-product-influencer-video"
+        class=" wd-product-influencer-video"
         id="shopify-section-template--16398653784144__product_influencer_video_iFjKDw"
       >
         <product-influencer-video-slider
@@ -2590,162 +2618,60 @@
             "pagination": false,
             "drag": true,
             "speed": 600,
-            "easing": "cubic-bezier(0.25, 1, 0.5, 1)",
-            "breakpoints": {
-              "1024": {
-                "pagination": true
-              }
-            }
+            "easing": "cubic-bezier(0.25, 1, 0.5, 1)"
           }
         '
                 data-splide-url="js/splide.min.js"
               >
                 <div class="splide__track">
                   <ul class="splide__list">
+                    <!-- EDIT: replace duplicated data-youtube-url values with your actual review links -->
                     <li class="splide__slide">
                       <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800.jpeg"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
+                        <div
+                          class="youtube-review-card"
+                          data-video-title="Огляд системи BP-D800G"
+                          data-youtube-url="https://www.youtube.com/shorts/Uxfv3M_qCAI"
+                        >
+                          <div class="youtube-review-card__player"></div>
+                        </div>
                       </div>
                     </li>
                     <li class="splide__slide">
                       <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800-1.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800-1.png"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio-1.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
+                        <div
+                          class="youtube-review-card"
+                          data-video-title="Другий огляд системи BP-D800G"
+                          data-youtube-url="https://www.youtube.com/shorts/grP4FQIgN6M"
+                        >
+                          <div class="youtube-review-card__player"></div>
+                        </div>
                       </div>
                     </li>
                     <li class="splide__slide">
                       <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800-2.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800-2.png"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio-1.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
+                        <div
+                          class="youtube-review-card"
+                          data-video-title="Третій огляд системи BP-D800G"
+                          data-youtube-url="https://www.youtube.com/shorts/NTDzQzblgr4"
+                        >
+                          <div class="youtube-review-card__player"></div>
+                        </div>
                       </div>
                     </li>
                     <li class="splide__slide">
                       <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800-3.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800-3.png"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
+                        <div
+                          class="youtube-review-card"
+                          data-video-title="Четвертий огляд системи BP-D800G"
+                          data-youtube-url="https://www.youtube.com/watch?v=KTkhsN4USzg"
+                        >
+                          <div class="youtube-review-card__player"></div>
+                        </div>
                       </div>
                     </li>
-                    <li class="splide__slide">
-                      <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800-4.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800-4.png"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio-1.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
-                      </div>
-                    </li>
-                    <li class="splide__slide">
-                      <div class="product-influencer-video__video-wrapper">
-                        <component-video
-                          class="component-video"
-                          style="--aspect-ratio: 16/9"
-                          ><img
-                            alt="Фільтр-система зворотного осмосу VIO BD-800G"
-                            draggable="false"
-                            loading="lazy"
-                            src="img/thumbs/800-5.jpg"
-                          />
-                          <template><video
-                            controls=""
-                            playsinline=""
-                            poster="img/800-5.png"
-                            preload="none"
-                          >
-                            <source
-                              src="video/vio-1.mp4"
-                              type="video/mp4"
-                            /></video></template
-                        ></component-video>
-                      </div>
-                    </li>
+                    
+                    
                   </ul>
                 </div>
                 <div class="product-influencer-video__arrows-wrapper">
@@ -3222,13 +3148,14 @@
                       </span>
                       <div class="wd-product-compare__prices-row"></div>
                     </div>
+                    <!-- EDIT: replace href="#" with your external resource URL -->
                     <button
                       aria-disabled="false"
-                      aria-label="Купити Фільтр-система зворотного осмосу VIO BP-D800G"
+                      aria-label="Купити Фільтр-система зворотного осмосу VIO BD-800G"
                       class="component-atc-button wd-product-compare__btn template-button template-button--primary"
                       data-atc-text="Купити"
                       data-event-category="pdp-overview-compare"
-                      type="button"
+                     type="button"
                     >
                       <span class="component-atc-button__text"> Купити </span>
                       <span aria-hidden="true" class="loading__spinner hidden"
@@ -3244,12 +3171,12 @@
                             fill="currentColor"
                           ></path></svg
                       ></span>
-                    </button>
+                  </button>
                   </div>
                 </th>
                 <th class="wd-product-compare__product" scope="col">
                   <div class="wd-product-compare__product-th">
-                    <a href="#">
+                    <a href="https://viofilters.com.ua/product/vio-bp-d1200g/">
                       <img
                         alt="VIO BD-D1200G"
                         class="component-image"
@@ -3281,14 +3208,13 @@
                         </span>
                       </div> -->
                     </div>
-                    <button
-                      aria-disabled="false"
-                      aria-label="Дивитись VIO BP-D1200G"
-                      class="component-atc-button wd-product-compare__btn "
-                    
+                    <a
+                      aria-label="Відкрити зовнішній ресурс для VIO BP-D1200G"
+                      class="component-atc-button template-button wd-product-compare__btn"
                       data-atc-text="Дивитись"
-                   
-                      type="button"
+                      href="https://viofilters.com.ua/product/vio-bp-d1200g/"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       <span class="component-atc-button__text"> Дивитись </span>
                       <span aria-hidden="true" class="loading__spinner hidden"
@@ -3304,12 +3230,12 @@
                             fill="currentColor"
                           ></path></svg
                       ></span>
-                    </button>
+                    </a>
                   </div>
                 </th>
                 <th class="wd-product-compare__product" scope="col">
                   <div class="wd-product-compare__product-th">
-                    <a href="#">
+                    <a href="https://viofilters.com.ua/product/vio-bp-r6-600g/">
                       <img
                         alt="VIO BP-R6 600G"
                         class="component-image"
@@ -3341,14 +3267,13 @@
                         </span>
                       </div> -->
                     </div>
-                    <button
-                      aria-disabled="false"
-                      aria-label="Дивитись BP-R6 600G"
-                      class="component-atc-button wd-product-compare__btn"
-                   
+                    <a
+                      aria-label="Відкрити зовнішній ресурс для VIO BP-R6 600G"
+                      class="component-atc-button template-button  wd-product-compare__btn"
                       data-atc-text="Дивитись"
-                     
-                      type="button"
+                      href="https://viofilters.com.ua/product/vio-bp-r6-600g/"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       <span class="component-atc-button__text"> Дивитись </span>
                       <span aria-hidden="true" class="loading__spinner hidden"
@@ -3364,7 +3289,7 @@
                             fill="currentColor"
                           ></path></svg
                       ></span>
-                    </button>
+                    </a>
                   </div>
                 </th>
               </tr>

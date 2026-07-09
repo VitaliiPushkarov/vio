@@ -842,6 +842,46 @@
     })
   }
 
+  function initVideoHeroHeader() {
+    const header = $('.template-topbar')
+    const hero = $('.template-video-hero')
+    if (!header || !hero) return
+
+    const root = document.documentElement
+    let rafId = 0
+
+    const syncHeaderHeight = () => {
+      root.style.setProperty(
+        '--template-topbar-height',
+        `${header.offsetHeight}px`,
+      )
+    }
+
+    const updateState = () => {
+      rafId = 0
+      syncHeaderHeight()
+
+      const threshold = header.offsetHeight + 8
+      const isOverHero = hero.getBoundingClientRect().bottom > threshold
+      header.classList.toggle('is-over-hero', isOverHero)
+    }
+
+    const requestUpdate = () => {
+      if (rafId) return
+      rafId = window.requestAnimationFrame(updateState)
+    }
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(requestUpdate)
+      resizeObserver.observe(header)
+    }
+
+    updateState()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', requestUpdate)
+    window.addEventListener('load', requestUpdate, { once: true })
+  }
+
   function initStickyPurchaseBar() {
     const hero = $('#template-hero')
     const bar = $('[data-sticky-purchase]')
@@ -990,25 +1030,6 @@
       syncState(!video.paused && !video.ended)
 
       if (playButton) {
-        playButton.addEventListener('click', (event) => {
-          event.preventDefault()
-          if (video.preload === 'none') {
-            video.preload = 'metadata'
-            try {
-              video.load()
-            } catch (_) {}
-          }
-          if (video.paused || video.ended) {
-            video.dataset.userPaused = 'false'
-            video.defaultMuted = true
-            video.muted = true
-            video.play().catch(() => {})
-          } else {
-            video.dataset.userPaused = 'true'
-            video.pause()
-          }
-        })
-
         video.addEventListener('click', () => {
           if (!video.paused && !video.ended) video.pause()
         })
@@ -1052,7 +1073,7 @@
 
       return video
     }
- 
+
     const hydrationObserver =
       'IntersectionObserver' in window
         ? new IntersectionObserver(
@@ -1135,6 +1156,123 @@
         }
       }
     })
+  }
+
+  function getYouTubeVideoId(url) {
+    const value = String(url || '').trim()
+    if (!value) return ''
+
+    try {
+      const parsed = new URL(value, window.location.origin)
+
+      if (parsed.hostname.includes('youtu.be')) {
+        return parsed.pathname.replace(/^\/+/, '').split('/')[0] || ''
+      }
+
+      if (parsed.searchParams.get('v')) {
+        return parsed.searchParams.get('v') || ''
+      }
+
+      const pathMatch = parsed.pathname.match(
+        /\/(?:embed|shorts|live)\/([^/?#]+)/,
+      )
+      if (pathMatch) return pathMatch[1] || ''
+    } catch (_) {
+      const directMatch = value.match(
+        /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([^&?/]+)/,
+      )
+      if (directMatch) return directMatch[1] || ''
+    }
+
+    return ''
+  }
+
+  function initProductInfluencerYouTube() {
+    const section = $('.product-influencer-video')
+    if (!section) return
+
+    const cards = $$('.youtube-review-card', section)
+    if (!cards.length) return
+
+    const pauseCard = (card) => {
+      const iframe = $('iframe.js-youtube', card)
+
+      if (iframe?.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({
+              event: 'command',
+              func: 'pauseVideo',
+              args: '',
+            }),
+            '*',
+          )
+        } catch (_) {}
+      }
+    }
+
+    const buildYouTubeIframe = (videoId, title) => {
+      const iframe = document.createElement('iframe')
+      const params = new URLSearchParams({
+        autoplay: '0',
+        playsinline: '1',
+        rel: '0',
+        modestbranding: '1',
+        enablejsapi: '1',
+      })
+
+      if (/^https?:$/.test(window.location.protocol)) {
+        params.set('origin', window.location.origin)
+      }
+
+      iframe.className = 'js-youtube youtube-review-card__iframe'
+      iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`
+      iframe.title = title || 'YouTube video player'
+      iframe.loading = 'lazy'
+      iframe.allow =
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+      iframe.allowFullscreen = true
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin'
+
+      return iframe
+    }
+
+    cards.forEach((card) => {
+      const player = $('.youtube-review-card__player', card)
+      if (!player) return
+
+      const title = card.dataset.videoTitle || 'YouTube review'
+      const videoId = getYouTubeVideoId(card.dataset.youtubeUrl)
+      if (!videoId) {
+        card.classList.add('is-empty')
+        player.innerHTML =
+          '<div class="youtube-review-card__empty">Add YouTube URL</div>'
+        return
+      }
+
+      player.replaceChildren(buildYouTubeIframe(videoId, title))
+      card.classList.add('is-ready')
+    })
+
+    const sliderEl = $('splide-slider.product-influencer-video-splide', section)
+    const bindSliderPause = (slider) => {
+      if (!slider || slider.__youtubeReviewBound === true) return
+      slider.__youtubeReviewBound = true
+
+      slider.on('move', () => {
+        cards.forEach((card) => {
+          pauseCard(card)
+        })
+      })
+    }
+
+    if (sliderEl?.slider) {
+      bindSliderPause(sliderEl.slider)
+    } else {
+      sliderEl?.addEventListener('splide:loaded', (event) => {
+        bindSliderPause(event.detail.slider)
+      })
+    }
   }
 
   function initLazyVideos() {
@@ -1506,7 +1644,13 @@
       (el) => {
         el.addEventListener('click', (event) => {
           const href = el.getAttribute && el.getAttribute('href')
-          if (href === '#' || el.classList.contains('component-atc-button')) {
+          const isLink = el.tagName === 'A'
+          const shouldPrevent =
+            href === '#' ||
+            el.getAttribute('name') === 'add' ||
+            (el.classList.contains('component-atc-button') && !isLink)
+
+          if (shouldPrevent) {
             event.preventDefault()
           }
         })
@@ -1520,8 +1664,10 @@
     initHeroBenefitsDrawer()
     initMobileMenu()
     initSmoothScroll()
+    initVideoHeroHeader()
     initStickyPurchaseBar()
     initComponentVideos()
+    initProductInfluencerYouTube()
     initLazyVideos()
     initVideoButtons()
     initProductNav()
