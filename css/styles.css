@@ -2265,6 +2265,26 @@ form[data-template-disabled='true'] {
   background-color: var(--color-text-highlight, #2f9d46);
 }
 
+.product-before-vs-after__tab-copy {
+  margin-top: 24px;
+}
+
+.product-before-vs-after__tab-copy-item {
+  display: none;
+}
+
+.product-before-vs-after__tab-copy-item.is-active {
+  display: block;
+}
+
+.product-before-vs-after__tab-copy-text {
+  margin: 0;
+  color: var(--color-text-secondary, #555);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
 .product-before-vs-after__right {
   position: relative;
   width: 100%;
@@ -2454,6 +2474,13 @@ form[data-template-disabled='true'] {
   .product-before-vs-after__tabs::-webkit-scrollbar {
     height: 0;
     display: none;
+  }
+
+  .product-before-vs-after__tab-copy {
+    order: -1;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 24px;
   }
 
   .product-before-vs-after__heading {

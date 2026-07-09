@@ -1376,16 +1376,42 @@
     $$('.product-before-vs-after').forEach((section) => {
       const tabs = $$('.product-before-vs-after__tabs-item', section)
       const slides = $$('.product-before-vs-after__slide', section)
+      const copies = $$('[data-pbva-copy]', section)
       if (!tabs.length || !slides.length) return
 
-      tabs.forEach((tab, index) => {
+      const setActiveTab = (key) => {
+        if (!key) return
+
+        tabs.forEach((tab) => {
+          tab.classList.toggle('is-active', tab.dataset.pbvaTab === key)
+        })
+
+        slides.forEach((slide) => {
+          slide.classList.toggle('is-active', slide.dataset.pbvaSlide === key)
+        })
+
+        copies.forEach((copy) => {
+          const active = copy.dataset.pbvaCopy === key
+          copy.classList.toggle('is-active', active)
+          copy.hidden = !active
+          copy.setAttribute('aria-hidden', active ? 'false' : 'true')
+        })
+      }
+
+      tabs.forEach((tab) => {
         tab.addEventListener('click', () => {
-          tabs.forEach((t) => t.classList.remove('is-active'))
-          slides.forEach((s) => s.classList.remove('is-active'))
-          tab.classList.add('is-active')
-          if (slides[index]) slides[index].classList.add('is-active')
+          setActiveTab(tab.dataset.pbvaTab || '')
         })
       })
+
+      const initialKey =
+        $('.product-before-vs-after__tabs-item.is-active', section)?.dataset
+          .pbvaTab ||
+        tabs[0]?.dataset.pbvaTab ||
+        slides[0]?.dataset.pbvaSlide ||
+        ''
+
+      setActiveTab(initialKey)
     })
   }
 
