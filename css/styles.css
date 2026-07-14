@@ -687,16 +687,40 @@ textarea {
   background: #0c1410;
 }
 
+.template-video-hero__poster,
 .template-video-hero__media,
 .template-video-hero__overlay {
   position: absolute;
   inset: 0;
 }
 
+.template-video-hero__poster {
+  margin: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.template-video-hero__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .template-video-hero__media {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  will-change: opacity;
+}
+
+.template-video-hero.is-video-ready .template-video-hero__poster {
+  opacity: 0;
+}
+
+.template-video-hero.is-video-ready .template-video-hero__media {
+  opacity: 1;
 }
 
 .template-video-hero__overlay {

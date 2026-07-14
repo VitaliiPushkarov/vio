@@ -530,7 +530,7 @@
       const setActiveVideo = (index, options = {}) => {
         if (!video || !videoSource || !videoItems.length) return
 
-        const { autoplay = false } = options
+        const { autoplay = false, load = true } = options
         currentVideoIndex = normalizeIndex(index, videoItems.length)
 
         videoItems.forEach((item, itemIndex) => {
@@ -547,17 +547,16 @@
 
         if (!src) return
 
+        if (poster) video.poster = poster
+        video.setAttribute('aria-label', label)
+
+        if (!load) return
+
         const sourceChanged = videoSource.getAttribute('src') !== src
         video.pause()
 
         if (sourceChanged) {
           videoSource.setAttribute('src', src)
-        }
-
-        if (poster) video.poster = poster
-        video.setAttribute('aria-label', label)
-
-        if (sourceChanged) {
           video.load()
         }
 
@@ -576,7 +575,12 @@
 
       const setActivePane = (key) => {
         syncTabs(key)
-        if (key !== 'video' && video) video.pause()
+        if (key === 'video') {
+          setActiveVideo(currentVideoIndex)
+          return
+        }
+
+        if (video) video.pause()
       }
 
       const openLightbox = () => {
@@ -736,7 +740,7 @@
         'image'
 
       setActiveImage(currentImageIndex)
-      setActiveVideo(currentVideoIndex)
+      setActiveVideo(currentVideoIndex, { load: initialPane === 'video' })
       setActivePane(initialPane)
     })
   }
@@ -982,6 +986,141 @@
     window.addEventListener('scroll', requestUpdate, { passive: true })
     window.addEventListener('resize', requestUpdate)
     window.addEventListener('load', requestUpdate, { once: true })
+  }
+
+  function initDeferredVideoHero() {
+    const hero = $('[data-video-hero]')
+    const video = $('[data-video-hero-media]', hero || document)
+    const source = $('[data-video-hero-source]', hero || document)
+    const poster = $('[data-video-hero-poster]', hero || document)
+    if (!hero || !video || !source) return
+
+    let videoLoaded = false
+    let startQueued = false
+    let idleId = 0
+    let timeoutId = 0
+
+    const cancelQueuedStart = () => {
+      if (idleId && 'cancelIdleCallback' in window) {
+        cancelIdleCallback(idleId)
+      }
+      if (timeoutId) {
+        window.clearTimeout(timeoutId)
+      }
+
+      idleId = 0
+      timeoutId = 0
+      startQueued = false
+    }
+
+    const loadVideo = () => {
+      if (videoLoaded) return
+
+      const src = source.dataset.src
+      if (!src) return
+
+      source.src = src
+      videoLoaded = true
+      video.preload = 'metadata'
+
+      try {
+        video.load()
+      } catch (_) {}
+    }
+
+    const playVideo = () => {
+      loadVideo()
+      video.defaultMuted = true
+      video.muted = true
+
+      const playAttempt = video.play()
+      if (playAttempt && typeof playAttempt.catch === 'function') {
+        playAttempt.catch(() => {})
+      }
+    }
+
+    const queueStart = () => {
+      if (startQueued || document.hidden) return
+
+      startQueued = true
+
+      const startPlayback = () => {
+        idleId = 0
+        timeoutId = 0
+        startQueued = false
+        playVideo()
+      }
+
+      if ('requestIdleCallback' in window) {
+        idleId = requestIdleCallback(startPlayback, { timeout: 1200 })
+      } else {
+        timeoutId = window.setTimeout(startPlayback, 400)
+      }
+    }
+
+    const startImmediately = () => {
+      cancelQueuedStart()
+      if (!document.hidden) playVideo()
+    }
+
+    const revealVideo = () => {
+      hero.classList.add('is-video-ready')
+      if (poster) poster.setAttribute('aria-hidden', 'true')
+    }
+
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
+    video.playsInline = true
+    video.defaultMuted = true
+    video.muted = true
+
+    video.addEventListener('playing', revealVideo)
+    video.addEventListener('canplay', () => {
+      if (document.hidden || !video.paused) return
+      playVideo()
+    })
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelQueuedStart()
+        video.pause()
+        return
+      }
+
+      if (hero.getBoundingClientRect().bottom > 0) {
+        if (videoLoaded) playVideo()
+        else queueStart()
+      }
+    })
+
+    ;['pointerdown', 'touchstart', 'focusin'].forEach((eventName) => {
+      hero.addEventListener(eventName, startImmediately, {
+        once: true,
+        passive: eventName === 'touchstart',
+      })
+    })
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              cancelQueuedStart()
+              video.pause()
+              return
+            }
+
+            if (videoLoaded) playVideo()
+            else queueStart()
+          })
+        },
+        { threshold: 0.2, rootMargin: '160px 0px' },
+      )
+
+      observer.observe(hero)
+    } else {
+      queueStart()
+    }
   }
 
   function initStickyPurchaseBar() {
@@ -1379,6 +1518,7 @@
 
   function initLazyVideos() {
     $$('video').forEach((video) => {
+      if (video.dataset.loadStrategy === 'manual') return
       if (video.dataset.src && !video.src) {
         video.src = video.dataset.src
       }
@@ -1792,6 +1932,7 @@
     initHeroBenefitsDrawer()
     initMobileMenu()
     initSmoothScroll()
+    initDeferredVideoHero()
     initVideoHeroHeader()
     initStickyPurchaseBar()
     initComponentVideos()

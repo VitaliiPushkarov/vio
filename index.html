@@ -195,17 +195,32 @@
     </div>
 
     <main id="MainContent">
-      <section class="template-video-hero" aria-label="Hero banner">
+      <section class="template-video-hero" aria-label="Hero banner" data-video-hero>
+        <picture class="template-video-hero__poster" data-video-hero-poster>
+          <source media="(max-width: 767px)" srcset="img/gallery/800.jpg" />
+          <img
+            src="img/gallery/800.jpg"
+            alt=""
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
         <video
-          autoplay
           class="template-video-hero__media"
           loop
           muted
           playsinline
-          poster="img/800-preload-1.png"
-          preload="metadata"
+          preload="none"
+          poster="img/gallery/800.jpg"
+          aria-hidden="true"
+          data-load-strategy="manual"
+          data-video-hero-media
         >
-          <source src="video/filter-system-v-1.mp4" type="video/mp4" />
+          <source
+            data-video-hero-source
+            data-src="video/filter-system-v-1.mp4"
+            type="video/mp4"
+          />
         </video>
         <div class="template-video-hero__overlay" aria-hidden="true"></div>
         <div class="template-video-hero__content section-container">
@@ -730,6 +745,7 @@
                   aria-label="Video 1"
                   class="template-hero__video-player"
                   controls
+                  data-load-strategy="manual"
                   data-gallery-video
                   playsinline
                   poster="img/gallery/800.jpg"
@@ -737,7 +753,6 @@
                 >
                   <source
                     data-gallery-video-source
-                    src="video/filter-system-v-1.mp4"
                     type="video/mp4"
                   />
                 </video>
