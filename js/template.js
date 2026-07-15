@@ -1710,10 +1710,19 @@
     const reducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches
+    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches
+    const shouldRevealOnLoad = (target) =>
+      isMobileViewport && target.classList.contains('template-hero__content')
 
     targets.forEach((target, index) => {
       if (target.dataset.reveal === 'ready') return
       target.dataset.reveal = 'ready'
+      if (shouldRevealOnLoad(target)) {
+        target.style.setProperty('--reveal-delay', '0ms')
+        target.classList.add('is-visible')
+        return
+      }
+
       target.style.setProperty('--reveal-delay', `${(index % 4) * 70}ms`)
     })
 
@@ -1736,7 +1745,10 @@
       },
     )
 
-    targets.forEach((target) => observer.observe(target))
+    targets.forEach((target) => {
+      if (target.classList.contains('is-visible')) return
+      observer.observe(target)
+    })
   }
 
   function initCompareSliders() {

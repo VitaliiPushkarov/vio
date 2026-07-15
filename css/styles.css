@@ -6078,4 +6078,7 @@ body.template-theme-hydrolab .vio-footer {
   .shopify-section.wd-product-splide-overflow-content {
     padding-top: 0;
   }
+  .template-hero__main-video {
+    aspect-ratio: 3/4;
+  }
 }
