@@ -264,6 +264,7 @@
       const prevImage = $('[data-gallery-prev]', gallery)
       const nextImage = $('[data-gallery-next]', gallery)
       const zoomTrigger = $('[data-gallery-zoom]', gallery)
+      const videoFrame = $('.template-hero__main-video', gallery)
       const lightbox = $('[data-gallery-lightbox]', gallery)
       const lightboxDialog = $('.template-hero__lightbox-dialog', gallery)
       const lightboxImage = $('[data-lightbox-image]', gallery)
@@ -553,6 +554,9 @@
         if (!load) return
 
         const sourceChanged = videoSource.getAttribute('src') !== src
+        if (sourceChanged && videoFrame) {
+          videoFrame.classList.remove('is-playing')
+        }
         video.pause()
 
         if (sourceChanged) {
@@ -570,6 +574,14 @@
           } else {
             playVideo()
           }
+        }
+      }
+
+      const syncHeroVideoState = () => {
+        if (!videoFrame || !video) return
+
+        if (!video.paused && !video.ended && video.readyState > 2) {
+          videoFrame.classList.add('is-playing')
         }
       }
 
@@ -703,6 +715,11 @@
         })
       })
 
+      if (video) {
+        video.addEventListener('play', syncHeroVideoState)
+        video.addEventListener('playing', syncHeroVideoState)
+      }
+
       bindSwipe(
         zoomTrigger,
         () => setActiveImage(currentImageIndex - 1),
@@ -742,6 +759,7 @@
       setActiveImage(currentImageIndex)
       setActiveVideo(currentVideoIndex, { load: initialPane === 'video' })
       setActivePane(initialPane)
+      syncHeroVideoState()
     })
   }
 
@@ -1129,6 +1147,7 @@
     if (!hero || !bar) return
 
     const priceSource = $('.template-hero__price', hero)
+    const ctaRow = $('.template-hero__cta-row', hero)
     const buySource = $(
       '.template-hero__cta-row .template-button--primary',
       hero,
@@ -1141,6 +1160,7 @@
     const buyTarget = $('[data-sticky-buy]', bar)
     const detailsTarget = $('[data-sticky-details]', bar)
     const topbar = $('.template-topbar')
+    const mobileViewport = window.matchMedia('(max-width: 767px)')
 
     const syncLink = (source, target) => {
       if (!source || !target) return
@@ -1177,8 +1197,9 @@
       rafId = 0
 
       const offsetTop = (topbar?.offsetHeight || 0) + 12
-      const heroBottom = hero.getBoundingClientRect().bottom
-      setVisible(heroBottom <= offsetTop)
+      const triggerElement = mobileViewport.matches && ctaRow ? ctaRow : hero
+      const triggerBottom = triggerElement.getBoundingClientRect().bottom
+      setVisible(triggerBottom <= offsetTop)
     }
 
     const requestUpdate = () => {
@@ -1190,6 +1211,11 @@
     window.addEventListener('scroll', requestUpdate, { passive: true })
     window.addEventListener('resize', requestUpdate)
     window.addEventListener('load', requestUpdate, { once: true })
+    if (mobileViewport.addEventListener) {
+      mobileViewport.addEventListener('change', requestUpdate)
+    } else if (mobileViewport.addListener) {
+      mobileViewport.addListener(requestUpdate)
+    }
   }
 
   function initComponentVideos() {
@@ -1821,83 +1847,155 @@
     }
   }
 
-  function initFaq() {
-    $$('.wd-faq-inner').forEach((root) => {
-      const items = $$('details.wd-faq-item', root)
-      if (!items.length) return
+  function createFaqItemIcon() {
+    const icon = document.createElement('span')
+    icon.className = 'wd-faq-item-icon'
+    icon.setAttribute('aria-hidden', 'true')
+    icon.innerHTML =
+      '<svg class="wd-faq-item-icon-svg" fill="none" height="7" viewBox="0 0 11 7" width="11" xmlns="http://www.w3.org/2000/svg"><path d="M0.442383 0.442383L5.44238 5.44238L10.4424 0.442383" stroke="currentColor" stroke-linejoin="round" stroke-width="1.25"></path></svg>'
+    return icon
+  }
 
-      const closeItem = (item) => {
-        const summary = $('summary', item)
-        const body = $('.wd-faq-item-body', item)
-        if (!body) return
+  function initFaqGroup(root) {
+    if (root.dataset.faqReady === 'true') return
 
-        item.classList.remove('wd-faq-item-active')
-        if (summary) summary.setAttribute('aria-expanded', 'false')
-        body.style.maxHeight = '0px'
-        window.setTimeout(() => {
-          if (!item.classList.contains('wd-faq-item-active')) {
-            item.removeAttribute('open')
-          }
-        }, 300)
+    const items = $$('details.wd-faq-item', root)
+    if (!items.length) return
+
+    root.dataset.faqReady = 'true'
+
+    const closeItem = (item) => {
+      const summary = $('summary', item)
+      const body = $('.wd-faq-item-body', item)
+      if (!body) return
+
+      item.classList.remove('wd-faq-item-active')
+      if (summary) summary.setAttribute('aria-expanded', 'false')
+      body.style.maxHeight = '0px'
+      window.setTimeout(() => {
+        if (!item.classList.contains('wd-faq-item-active')) {
+          item.removeAttribute('open')
+        }
+      }, 300)
+    }
+
+    const openItem = (item) => {
+      const summary = $('summary', item)
+      const body = $('.wd-faq-item-body', item)
+      const inner = $('.wd-faq-item-body-inner', item)
+      if (!body || !inner) return
+
+      item.setAttribute('open', '')
+      item.classList.add('wd-faq-item-active')
+      if (summary) summary.setAttribute('aria-expanded', 'true')
+      body.style.maxHeight = inner.scrollHeight + 'px'
+    }
+
+    items.forEach((item) => {
+      const summary = $('summary', item)
+      if (!summary) return
+
+      if (item.open) openItem(item)
+      else {
+        summary.setAttribute('aria-expanded', 'false')
+        closeItem(item)
       }
 
-      const openItem = (item) => {
-        const summary = $('summary', item)
-        const body = $('.wd-faq-item-body', item)
-        const inner = $('.wd-faq-item-body-inner', item)
-        if (!body || !inner) return
+      summary.addEventListener('click', (event) => {
+        event.preventDefault()
+        const isOpen = item.classList.contains('wd-faq-item-active')
 
-        item.setAttribute('open', '')
-        item.classList.add('wd-faq-item-active')
-        if (summary) summary.setAttribute('aria-expanded', 'true')
-        body.style.maxHeight = inner.scrollHeight + 'px'
-      }
-
-      items.forEach((item) => {
-        const summary = $('summary', item)
-        if (!summary) return
-
-        if (item.open) openItem(item)
-        else {
-          summary.setAttribute('aria-expanded', 'false')
+        if (isOpen) {
           closeItem(item)
+          return
         }
 
-        summary.addEventListener('click', (event) => {
-          event.preventDefault()
-          const isOpen = item.classList.contains('wd-faq-item-active')
-
-          if (isOpen) {
-            closeItem(item)
-            return
-          }
-
-          items.forEach((other) => {
-            if (other !== item) closeItem(other)
-          })
-          openItem(item)
+        items.forEach((other) => {
+          if (other !== item) closeItem(other)
         })
+        openItem(item)
+      })
+    })
+
+    window.addEventListener('resize', () => {
+      items.forEach((item) => {
+        if (!item.classList.contains('wd-faq-item-active')) return
+        const body = $('.wd-faq-item-body', item)
+        const inner = $('.wd-faq-item-body-inner', item)
+        if (body && inner) body.style.maxHeight = inner.scrollHeight + 'px'
+      })
+    })
+
+    const toggle = $('.wd-faq-toggle-more', root)
+    const list = $('.wd-faq-list', root)
+    if (toggle && list) {
+      toggle.addEventListener('click', () => {
+        const expanded = list.classList.toggle('wd-faq-list--expanded')
+        toggle.classList.toggle('wd-faq-toggle-more--expanded', expanded)
+        const text = $('.wd-faq-toggle-more-text', toggle)
+        if (text) text.textContent = expanded ? 'Show Less' : 'Show More'
+      })
+    }
+  }
+
+  function initSpecsMobileTabs() {
+    $$('.wd-specs-list').forEach((list) => {
+      if (list.dataset.mobileTabsReady === 'true') return
+
+      const items = $$('.wd-specs-item', list)
+      if (!items.length) return
+
+      const accordion = document.createElement('div')
+      accordion.className = 'wd-specs-mobile-faq'
+      accordion.setAttribute('aria-label', 'Специфікації')
+
+      const accordionList = document.createElement('div')
+      accordionList.className = 'wd-faq-list wd-specs-mobile-faq-list'
+
+      items.forEach((item, itemIndex) => {
+        const label = $('.wd-specs-item-label', item)?.textContent?.trim()
+        const value = $('.wd-specs-item-value', item)
+        if (!label || !value) return
+
+        const details = document.createElement('details')
+        details.className = 'wd-faq-item wd-specs-faq-item'
+        if (itemIndex === 0) details.setAttribute('open', '')
+
+        const summary = document.createElement('summary')
+        summary.className = 'wd-faq-item-header'
+
+        const title = document.createElement('h3')
+        title.className = 'wd-faq-item-title'
+        title.textContent = label
+
+        const body = document.createElement('div')
+        body.className = 'wd-faq-item-body'
+
+        const bodyInner = document.createElement('div')
+        bodyInner.className = 'wd-faq-item-body-inner'
+
+        const valueClone = value.cloneNode(true)
+        bodyInner.appendChild(valueClone)
+        summary.appendChild(title)
+        summary.appendChild(createFaqItemIcon())
+        body.appendChild(bodyInner)
+        details.appendChild(summary)
+        details.appendChild(body)
+        accordionList.appendChild(details)
       })
 
-      window.addEventListener('resize', () => {
-        items.forEach((item) => {
-          if (!item.classList.contains('wd-faq-item-active')) return
-          const body = $('.wd-faq-item-body', item)
-          const inner = $('.wd-faq-item-body-inner', item)
-          if (body && inner) body.style.maxHeight = inner.scrollHeight + 'px'
-        })
-      })
+      if (!accordionList.children.length) return
 
-      const toggle = $('.wd-faq-toggle-more', root)
-      const list = $('.wd-faq-list', root)
-      if (toggle && list) {
-        toggle.addEventListener('click', () => {
-          const expanded = list.classList.toggle('wd-faq-list--expanded')
-          toggle.classList.toggle('wd-faq-toggle-more--expanded', expanded)
-          const text = $('.wd-faq-toggle-more-text', toggle)
-          if (text) text.textContent = expanded ? 'Show Less' : 'Show More'
-        })
-      }
+      accordion.appendChild(accordionList)
+      list.parentNode?.insertBefore(accordion, list)
+      list.dataset.mobileTabsReady = 'true'
+      initFaqGroup(accordion)
+    })
+  }
+
+  function initFaq() {
+    $$('.wd-faq-inner').forEach((root) => {
+      initFaqGroup(root)
     })
   }
 
@@ -1943,6 +2041,7 @@
     initBeforeAfterTabs()
     initCompareSliders()
     initGenericTabs()
+    initSpecsMobileTabs()
     initFaq()
     initRevealAnimations()
     disableLiveStoreSubmits()
