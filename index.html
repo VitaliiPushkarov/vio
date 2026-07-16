@@ -195,6 +195,45 @@
     </div>
 
     <main id="MainContent">
+        <section class="template-video-hero" aria-label="Hero banner" data-video-hero>
+        <picture class="template-video-hero__poster" data-video-hero-poster>
+          <source media="(max-width: 767px)" srcset="img/gallery/800.jpg" />
+          <img
+            src="img/gallery/800.jpg"
+            alt=""
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <video
+          class="template-video-hero__media"
+          loop
+          muted
+          playsinline
+          preload="none"
+          poster="img/gallery/800.jpg"
+          aria-hidden="true"
+          data-load-strategy="manual"
+          data-video-hero-media
+        >
+          <source
+            data-video-hero-source
+            data-src="video/filter-system-v-1.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div class="template-video-hero__overlay" aria-hidden="true"></div>
+        <div class="template-video-hero__content section-container">
+          <h2 class="template-video-hero__title">Система Фільтрації BP-D800G</h2>
+          <button
+            class="template-video-hero__cta"
+            data-scroll-target="#template-hero"
+            type="button"
+          >
+            Досліджуй
+          </button>
+        </div>
+      </section>
        <section
         class="template-hero wd-product-anchor-overview section-container"
         id="template-hero"
@@ -951,45 +990,7 @@
           </div>
         </div>
       </aside>
-      <!-- <section class="template-video-hero" aria-label="Hero banner" data-video-hero>
-        <picture class="template-video-hero__poster" data-video-hero-poster>
-          <source media="(max-width: 767px)" srcset="img/gallery/800.jpg" />
-          <img
-            src="img/gallery/800.jpg"
-            alt=""
-            fetchpriority="high"
-            decoding="async"
-          />
-        </picture>
-        <video
-          class="template-video-hero__media"
-          loop
-          muted
-          playsinline
-          preload="none"
-          poster="img/gallery/800.jpg"
-          aria-hidden="true"
-          data-load-strategy="manual"
-          data-video-hero-media
-        >
-          <source
-            data-video-hero-source
-            data-src="video/filter-system-v-1.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="template-video-hero__overlay" aria-hidden="true"></div>
-        <div class="template-video-hero__content section-container">
-          <h2 class="template-video-hero__title">Система Фільтрації BP-D800G</h2>
-          <button
-            class="template-video-hero__cta"
-            data-scroll-target="#template-hero"
-            type="button"
-          >
-            Досліджуй
-          </button>
-        </div>
-      </section> -->
+    
        <!-- ORIGINAL SECTION 2 -->
       <div id="overview"></div>
       <section
@@ -2316,7 +2317,7 @@
                   height="621"
                   loading="lazy"
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  src="img/compare-systems-slide.png"
+                  src="img/compare-systems-slide-n.png"
                   width="888"
                 />
               </div>
@@ -2513,9 +2514,9 @@
         <div
           class="wd-product-splide section-container wd-product-splide-template--16398653784144__product_overview_gallery_GgTagt"
         >
-          <h4 class="wd-product-splide-title only_swiper">
+        <!--   <h4 class="wd-product-splide-title only_swiper">
             Більше деталей про продукт <br> <span class="text-label-green">BP-D800G</span> 
-          </h4>
+          </h4> -->
           <splide-slider
             class="splide"
             data-lazy-load="true"
@@ -2802,7 +2803,7 @@
                 <div class="wd-specs-item-value">BP-D800G</div>
               </div> -->
               <div class="wd-specs-item">
-                <div class="wd-specs-item-label">Фільтрована до Дренажної</div>
+                <div class="wd-specs-item-label">Співвідношення фільтрованої до дренажної</div>
                 <div class="wd-specs-item-value">2:1</div>
               </div>
               <div class="wd-specs-item">
@@ -2841,6 +2842,10 @@
               <div class="wd-specs-item">
                 <div class="wd-specs-item-label">Потрібна Електроенергія</div>
                 <div class="wd-specs-item-value highlight">Так</div>
+              </div>
+               <div class="wd-specs-item">
+                <div class="wd-specs-item-label">Температура вхідної води</div>
+                <div class="wd-specs-item-value highlight">5-38°С</div>
               </div>
             </div>
           </div>

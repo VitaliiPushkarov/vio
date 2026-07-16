@@ -674,6 +674,9 @@ textarea {
   padding-top: 0;
   padding-bottom: 0;
 }
+.shopify-section.product-selling-points-section {
+  background: var(--color-surface-secondary, #f8f8f8);
+}
 
 .template-video-hero {
   position: relative;
@@ -1695,8 +1698,7 @@ form[data-template-disabled='true'] {
 
 @media screen and (max-width: 767px) {
   .template-video-hero {
-    height: 100vh;
-    height: 100svh;
+    height: calc(100svh - 40px);
   }
 
   .template-video-hero__content {
@@ -3240,10 +3242,6 @@ form[data-template-disabled='true'] {
     margin-bottom: 16px;
   }
 
-  .product-waterdrop-animation__content-subheading {
-    font-size: 14px;
-  }
-
   .product-waterdrop-animation__ph-value,
   .product-waterdrop-animation__temp-value {
     font-size: 28px;
@@ -3383,7 +3381,6 @@ form[data-template-disabled='true'] {
 
   .product-card-splide_slide-content-description {
     margin-top: 8px;
-    font-size: 14px;
   }
 
   .wd-product-card-splide .product-more-points-arrows.splide__arrows {
@@ -3646,7 +3643,7 @@ form[data-template-disabled='true'] {
     width: 100%;
   }
   .media-with-text__inner {
-    gap: 24px;
+    gap: 18px;
   }
 }
 
@@ -4342,8 +4339,7 @@ form[data-template-disabled='true'] {
 
 @media (max-width: 767px) {
   .product-influencer-video {
-    padding: var(--spacing-section-spacing-mobile, 40px)
-      var(--spacing-margin-mobile, 24px);
+    padding: 40px var(--spacing-margin-mobile, 24px) 0;
   }
 
   .product-influencer-video__video-wrapper {
@@ -5147,7 +5143,7 @@ form[data-template-disabled='true'] {
   }
   .wd-product-compare__title-cell.h3 {
     display: flex;
-    margin-bottom: 32px;
+    margin-bottom: 18px;
     font-weight: 600;
     padding: 0 var(--spacing-margin-mobile);
     flex-wrap: wrap;
@@ -6072,13 +6068,24 @@ body.template-theme-hydrolab .vio-footer {
   .product-before-vs-after__tab-copy-text {
     text-align: left;
   }
-  .wd-product-splide-title.only_swiper {
-    display: none;
-  }
+
   .shopify-section.wd-product-splide-overflow-content {
     padding-top: 0;
   }
   .template-hero__main-video {
     aspect-ratio: 3/4;
   }
+  .product-card-splide_slide-content-title {
+    margin: 0;
+  }
+  .wd-specs-item-value.highlight {
+    border-radius: 0;
+    padding: 0;
+    background: none;
+    font-weight: 300;
+    line-height: 100%;
+  }
+}
+.shopify-section.wd-product-splide-overflow-content {
+  padding-top: 0;
 }
