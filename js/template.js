@@ -966,13 +966,160 @@
     })
   }
 
+  function initVideoHeroSlider() {
+    const hero = $('.template-video-hero')
+    const viewport = $('[data-hero-slider-viewport]', hero || document)
+    const slides = $$('[data-hero-slide]', hero || document)
+    const triggers = $$('[data-hero-slide-trigger]', hero || document)
+    if (!hero || !viewport || slides.length <= 1) return
+    if (hero.dataset.sliderReady === 'true') return
+
+    hero.dataset.sliderReady = 'true'
+
+    let currentIndex = Math.max(
+      slides.findIndex((slide) => slide.classList.contains('is-active')),
+      0,
+    )
+    let scrollRaf = 0
+    let scrollEndTimeout = 0
+
+    const isMobileViewport = () =>
+      window.matchMedia('(max-width: 767px)').matches
+
+    const normalizeIndex = (index) =>
+      (index + slides.length) % slides.length
+
+    const setSlideState = (slide, active) => {
+      const nextState = active ? 'true' : 'false'
+      if (slide.dataset.active === nextState) return
+
+      slide.dataset.active = nextState
+      slide.dispatchEvent(
+        new CustomEvent(
+          active ? 'hero-slide:activate' : 'hero-slide:deactivate',
+          { bubbles: true },
+        ),
+      )
+    }
+
+    const updateUi = (nextIndex) => {
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === nextIndex
+        slide.classList.toggle('is-active', active)
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true')
+        setSlideState(slide, active)
+      })
+
+      triggers.forEach((trigger, triggerIndex) => {
+        const active = triggerIndex === nextIndex
+        trigger.classList.toggle('is-active', active)
+        trigger.setAttribute('aria-pressed', active ? 'true' : 'false')
+      })
+    }
+
+    const scrollToSlide = (nextIndex, behavior = 'smooth') => {
+      const slide = slides[nextIndex]
+      if (!slide) return
+
+      let left = slide.offsetLeft
+
+      if (
+        isMobileViewport() &&
+        slide.classList.contains('template-video-hero__slide--video')
+      ) {
+        const centeredLeft =
+          slide.offsetLeft - (viewport.clientWidth - slide.offsetWidth) / 2
+        const maxScrollLeft = Math.max(0, viewport.scrollWidth - viewport.clientWidth)
+        left = Math.min(Math.max(0, centeredLeft), maxScrollLeft)
+      }
+
+      viewport.scrollTo({
+        left,
+        behavior,
+      })
+    }
+
+    const setActiveSlide = (nextIndex, options = {}) => {
+      const { scroll = true, behavior = 'smooth' } = options
+      currentIndex = normalizeIndex(nextIndex)
+      updateUi(currentIndex)
+
+      if (scroll) {
+        scrollToSlide(currentIndex, behavior)
+      }
+    }
+
+    const alignActiveSlideAfterScroll = () => {
+      scrollEndTimeout = 0
+
+      if (!isMobileViewport()) return
+
+      const activeSlide = slides[currentIndex]
+      if (!activeSlide) return
+      if (!activeSlide.classList.contains('template-video-hero__slide--video'))
+        return
+
+      scrollToSlide(currentIndex, 'smooth')
+    }
+
+    const syncFromScroll = () => {
+      scrollRaf = 0
+
+      const viewportRect = viewport.getBoundingClientRect()
+      if (!viewportRect.width) return
+
+      const anchor = viewportRect.left + viewportRect.width / 2
+      let nextIndex = currentIndex
+      let nearestDistance = Number.POSITIVE_INFINITY
+
+      slides.forEach((slide, slideIndex) => {
+        const rect = slide.getBoundingClientRect()
+        const center = rect.left + rect.width / 2
+        const distance = Math.abs(center - anchor)
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance
+          nextIndex = slideIndex
+        }
+      })
+
+      if (nextIndex !== currentIndex) {
+        setActiveSlide(nextIndex, { scroll: false })
+      } else {
+        updateUi(currentIndex)
+      }
+    }
+
+    triggers.forEach((trigger, triggerIndex) => {
+      trigger.addEventListener('click', () => {
+        setActiveSlide(triggerIndex)
+      })
+    })
+
+    viewport.addEventListener(
+      'scroll',
+      () => {
+        if (scrollRaf) return
+        scrollRaf = window.requestAnimationFrame(syncFromScroll)
+
+        if (scrollEndTimeout) window.clearTimeout(scrollEndTimeout)
+        scrollEndTimeout = window.setTimeout(alignActiveSlideAfterScroll, 110)
+      },
+      { passive: true },
+    )
+
+    window.addEventListener('resize', () => {
+      setActiveSlide(currentIndex, { behavior: 'auto' })
+    })
+
+    setActiveSlide(currentIndex, { behavior: 'auto' })
+  }
+
   function initVideoHeroHeader() {
     const header = $('.template-topbar')
-    const hero = $('.template-video-hero')
-    if (!header || !hero) return
+    if (!header) return
 
     const root = document.documentElement
-    let rafId = 0
 
     const syncHeaderHeight = () => {
       root.style.setProperty(
@@ -981,29 +1128,16 @@
       )
     }
 
-    const updateState = () => {
-      rafId = 0
-      syncHeaderHeight()
-
-      const threshold = header.offsetHeight + 8
-      const isOverHero = hero.getBoundingClientRect().bottom > threshold
-      header.classList.toggle('is-over-hero', isOverHero)
-    }
-
-    const requestUpdate = () => {
-      if (rafId) return
-      rafId = window.requestAnimationFrame(updateState)
-    }
+    header.classList.remove('is-over-hero')
 
     if ('ResizeObserver' in window) {
-      const resizeObserver = new ResizeObserver(requestUpdate)
+      const resizeObserver = new ResizeObserver(syncHeaderHeight)
       resizeObserver.observe(header)
     }
 
-    updateState()
-    window.addEventListener('scroll', requestUpdate, { passive: true })
-    window.addEventListener('resize', requestUpdate)
-    window.addEventListener('load', requestUpdate, { once: true })
+    syncHeaderHeight()
+    window.addEventListener('resize', syncHeaderHeight)
+    window.addEventListener('load', syncHeaderHeight, { once: true })
   }
 
   function initDeferredVideoHero() {
@@ -1013,10 +1147,14 @@
     const poster = $('[data-video-hero-poster]', hero || document)
     if (!hero || !video || !source) return
 
+    const slide = hero.closest('[data-hero-slide]')
+
     let videoLoaded = false
     let startQueued = false
     let idleId = 0
     let timeoutId = 0
+    let heroVisible = !('IntersectionObserver' in window)
+    let slideActive = slide ? slide.dataset.active === 'true' : true
 
     const cancelQueuedStart = () => {
       if (idleId && 'cancelIdleCallback' in window) {
@@ -1030,6 +1168,13 @@
       timeoutId = 0
       startQueued = false
     }
+
+    const stopVideo = () => {
+      cancelQueuedStart()
+      video.pause()
+    }
+
+    const canPlay = () => !document.hidden && heroVisible && slideActive
 
     const loadVideo = () => {
       if (videoLoaded) return
@@ -1058,7 +1203,7 @@
     }
 
     const queueStart = () => {
-      if (startQueued || document.hidden) return
+      if (startQueued || !canPlay()) return
 
       startQueued = true
 
@@ -1066,7 +1211,7 @@
         idleId = 0
         timeoutId = 0
         startQueued = false
-        playVideo()
+        if (canPlay()) playVideo()
       }
 
       if ('requestIdleCallback' in window) {
@@ -1078,7 +1223,7 @@
 
     const startImmediately = () => {
       cancelQueuedStart()
-      if (!document.hidden) playVideo()
+      if (canPlay()) playVideo()
     }
 
     const revealVideo = () => {
@@ -1094,18 +1239,17 @@
 
     video.addEventListener('playing', revealVideo)
     video.addEventListener('canplay', () => {
-      if (document.hidden || !video.paused) return
+      if (!canPlay() || !video.paused) return
       playVideo()
     })
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        cancelQueuedStart()
-        video.pause()
+        stopVideo()
         return
       }
 
-      if (hero.getBoundingClientRect().bottom > 0) {
+      if (canPlay()) {
         if (videoLoaded) playVideo()
         else queueStart()
       }
@@ -1118,15 +1262,31 @@
       })
     })
 
+    if (slide) {
+      slide.addEventListener('hero-slide:activate', () => {
+        slideActive = true
+        if (videoLoaded) playVideo()
+        else queueStart()
+      })
+
+      slide.addEventListener('hero-slide:deactivate', () => {
+        slideActive = false
+        stopVideo()
+      })
+    }
+
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
-              cancelQueuedStart()
-              video.pause()
+            heroVisible = entry.isIntersecting
+
+            if (!heroVisible) {
+              stopVideo()
               return
             }
+
+            if (!canPlay()) return
 
             if (videoLoaded) playVideo()
             else queueStart()
@@ -1137,7 +1297,7 @@
 
       observer.observe(hero)
     } else {
-      queueStart()
+      if (canPlay()) queueStart()
     }
   }
 
@@ -2042,6 +2202,7 @@
     initHeroBenefitsDrawer()
     initMobileMenu()
     initSmoothScroll()
+    initVideoHeroSlider()
     initDeferredVideoHero()
     initVideoHeroHeader()
     initStickyPurchaseBar()

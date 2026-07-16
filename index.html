@@ -195,42 +195,108 @@
     </div>
 
     <main id="MainContent">
-        <section class="template-video-hero" aria-label="Hero banner" data-video-hero>
-        <picture class="template-video-hero__poster" data-video-hero-poster>
-          <source media="(max-width: 767px)" srcset="img/gallery/800.jpg" />
-          <img
-            src="img/gallery/800.jpg"
-            alt=""
-            fetchpriority="high"
-            decoding="async"
-          />
-        </picture>
-        <video
-          class="template-video-hero__media"
-          loop
-          muted
-          playsinline
-          preload="none"
-          poster="img/gallery/800.jpg"
-          aria-hidden="true"
-          data-load-strategy="manual"
-          data-video-hero-media
-        >
-          <source
-            data-video-hero-source
-            data-src="video/filter-system-v-1.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div class="template-video-hero__overlay" aria-hidden="true"></div>
-        <div class="template-video-hero__content section-container">
-          <h2 class="template-video-hero__title">Система Фільтрації BP-D800G</h2>
+      <section class="template-video-hero" aria-label="Hero banner">
+        <div class="template-video-hero__viewport" data-hero-slider-viewport>
+          <div class="template-video-hero__track">
+            <article
+              aria-hidden="false"
+              class="template-video-hero__slide template-video-hero__slide--banner is-active"
+              data-active="true"
+              data-hero-slide
+            >
+              <picture class="template-video-hero__background">
+                <source
+                  media="(max-width: 767px)"
+                  srcset="img/more-details-product-mob-2.png"
+                />
+                <img
+                  src="img/more-details-slide-2.jpg"
+                  alt="Система фільтрації BP-D800G"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </picture>
+              
+              <div class="template-video-hero__content section-container">
+               <!--  <div class="template-video-hero__copy">
+                  <h2 class="template-video-hero__title">
+                    Система Фільтрації BP-D800G
+                  </h2>
+                  
+                </div> -->
+                <button
+                  class="template-video-hero__cta template-video-hero__cta--solid"
+                  data-scroll-target="#template-hero"
+                  type="button"
+                >
+                  Купити
+                </button>
+              </div>
+            </article>
+            <article
+              aria-hidden="true"
+              class="template-video-hero__slide template-video-hero__slide--video"
+              data-active="false"
+              data-hero-slide
+              data-video-hero
+            >
+              <picture class="template-video-hero__poster" data-video-hero-poster>
+                <source media="(max-width: 767px)" srcset="img/800-preload-1.png" />
+                <img src="img/800-preload-1.png" alt="" decoding="async" />
+              </picture>
+              <video
+                class="template-video-hero__media"
+                loop
+                muted
+                playsinline
+                preload="none"
+                poster="img/800-preload-1.png"
+                aria-hidden="true"
+                data-load-strategy="manual"
+                data-video-hero-media
+              >
+                <source
+                  data-video-hero-source
+                  data-src="video/filter-system-v-1.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              
+              <div class="template-video-hero__content section-container">
+                <div class="template-video-hero__copy">
+                  <h2 class="template-video-hero__title">
+                    Система Фільтрації BP-D800G
+                  </h2>
+                </div>
+                <button
+                  class="template-video-hero__cta"
+                  data-scroll-target="#template-hero"
+                  type="button"
+                >
+                  Досліджуй
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="template-video-hero__controls" aria-label="Hero slides">
           <button
-            class="template-video-hero__cta"
-            data-scroll-target="#template-hero"
+            aria-label="Go to slide 1"
+            aria-pressed="true"
+            class="template-video-hero__control is-active"
+            data-hero-slide-trigger="0"
             type="button"
           >
-            Досліджуй
+            1
+          </button>
+          <button
+            aria-label="Go to slide 2"
+            aria-pressed="false"
+            class="template-video-hero__control"
+            data-hero-slide-trigger="1"
+            type="button"
+          >
+            2
           </button>
         </div>
       </section>
@@ -1445,8 +1511,8 @@
                 <span class="text-label-green">3 секунди</span> і чашка повна
               </h2>
               <p class="product-media-switch__sub-heading">
-                Цей фільтр для води під раковину може наповнити чашку об’ємом 2,1 л/хв.
-                Не потрібно чекати — просто насолоджуйтеся освіжаючою водою вдома, коли забажаєте.
+                800G може наповнити чашку об’ємом 2,1 л/хв.
+                Не потрібно чекати — насолоджуйтеся освіжаючою водою вдома, коли забажаєте.
               </p>
             </div>
           </div>
