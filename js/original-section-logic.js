@@ -139,7 +139,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 16: shopify-section-template--16398653784144__select_guide_Y6F9Db */
 try {
   if (typeof window.handleSelectGuideTrackClick !== 'function') {
     window.handleSelectGuideTrackClick = function handleSelectGuideTrackClick(
@@ -196,7 +195,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 5: shopify-section-template--16398653784144__product_waterdrop_animation_gYFahm */
 try {
   ;(() => {
     'use strict'
@@ -328,7 +326,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 7: shopify-section-template--16398653784144__product_waterdrop_animation_VCpKMm */
 try {
   ;(() => {
     'use strict'
@@ -460,7 +457,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 11: shopify-section-template--16398653784144__product_overview_gallery_GgTagt */
 try {
   ;(function () {
     let roots = document.querySelectorAll('.wd-product-splide')
@@ -540,7 +536,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 12: shopify-section-template--16398653784144__product_influencer_video_iFjKDw */
 try {
   class ProductInfluencerVideoSlider extends HTMLElement {
     constructor() {
@@ -752,7 +747,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 15: shopify-section-template--16398653784144__product_compare_4QRyy3 */
 try {
   ;(() => {
     const section = document.querySelector(
@@ -859,7 +853,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 17: shopify-section-template--16398653784144__product_reviews_detailed_fi9wWH */
 try {
   document.addEventListener('DOMContentLoaded', function () {
     let container = document.getElementById('review-content')
@@ -892,7 +885,6 @@ try {
   console.warn('Original section script skipped:', error)
 }
 
-/* ORIGINAL UI SCRIPT FROM SECTION 18: shopify-section-template--16398653784144__product_faq_Dqgdny */
 try {
   document.addEventListener('DOMContentLoaded', function () {
     const root = document.querySelector('.wd-faq-inner')

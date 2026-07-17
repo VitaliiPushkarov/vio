@@ -1756,7 +1756,6 @@ form[data-template-disabled='true'] {
 
 @media screen and (max-width: 767px) {
   .template-video-hero {
-    height: 100svh;
     --template-video-hero-mobile-slide-width: calc(100vw - 36px);
   }
 
@@ -5991,10 +5990,9 @@ details.wd-faq-item.wd-faq-item-active,
 .vio-footer__social-link {
   width: 48px;
   height: 48px;
-  border: 1.5px solid #111;
+  border: 1.5px solid #dbdbdb;
   border-radius: 999px;
   background: #fff;
-  color: #111;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6002,19 +6000,20 @@ details.wd-faq-item.wd-faq-item-active,
   cursor: pointer;
   transition:
     transform 0.2s ease,
-    background-color 0.2s ease,
-    color 0.2s ease;
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .vio-footer__social-link:hover {
   transform: translateY(-2px);
-  background: #111;
-  color: #fff;
+  border-color: #bdbdbd;
+  box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
 }
 
-.vio-footer__social-link svg {
+.vio-footer__social-icon {
   width: 30px;
   height: 30px;
+  display: block;
 }
 
 .vio-footer__email {
@@ -6181,6 +6180,9 @@ body.template-theme-hydrolab .vio-footer {
     background: none;
     font-weight: 300;
     line-height: 100%;
+  }
+  .template-video-hero__content {
+    align-items: center;
   }
 }
 .shopify-section.wd-product-splide-overflow-content {
